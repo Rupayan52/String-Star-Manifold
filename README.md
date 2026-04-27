@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/1222455299.svg)](https://doi.org/10.5281/zenodo.19822536)
 # String-Star-Manifold
 A JAX-accelerated simulation of unitary information conservation via the String-Star-Cycle.
 # The String-Star Manifold
@@ -28,3 +29,5 @@ $$I_{total} = I_{bulk} + I_{horizon} + I_{vacuum}$$
 ## Integrity Logs
 The system has been verified at a 1000-bit scale over 100 epochs with **zero information loss**.
 $$I_{total} = I_{bulk} + I_{horizon} + I_{vacuum}$$
+## Citation
+"If you use this manifold in your research, please cite it as: Bandyopadhyay, R. (2026). Unitary Information Conservation in a Discrete N-Body Manifold. Zenodo. https://doi.org/10.5281/zenodo.19822537"
