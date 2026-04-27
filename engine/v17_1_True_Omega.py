@@ -142,7 +142,7 @@ for epoch in range(1, 101):
     time.sleep(0.3)
 
 # --- 4. CSV EXPORT FUNCTION (Moved outside the loop) ---
-def export_telemetry_to_csv(filename="omega_run_100_epochs.csv"):
+def export_telemetry_to_csv(filename="final_run_100_epochs.csv"):
     with open(filename, mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(["Epoch", "Bulk_Matter", "Horizon_Bits", "Vacuum_Pool", "Total_Integrity", "Notable_Events"])
