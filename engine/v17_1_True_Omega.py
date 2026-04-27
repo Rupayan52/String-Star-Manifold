@@ -3,6 +3,7 @@ import jax.numpy as jnp
 import numpy as np
 import time
 import warnings
+import csv  # <-- Moved to top
 
 warnings.filterwarnings("ignore")
 
@@ -36,6 +37,9 @@ MIN_EVAP_CONST = 0.5
 print("\n==========================================")
 print("  INITIATING TRUE OMEGA PRODUCTION RUN    ")
 print("==========================================")
+
+# <-- Initialize the empty list to hold our data before the loop starts
+telemetry_data = [] 
 
 for epoch in range(1, 101):
     events = []
@@ -78,7 +82,6 @@ for epoch in range(1, 101):
             
             if dist < r_s:
                 # ACCRETION: All bits from j move to i's horizon
-                # Bulk bits of j + Surface bits of j -> Surface bits of i
                 stored_microstates[i] += int(masses[j] + stored_microstates[j])
                 masses[j], stored_microstates[j], entanglement_map[j] = 0.0, 0, -1
                 events.append("!!! [HOLOGRAPHIC SHIFT] Bulk mass converted to Horizon Bits.")
@@ -103,7 +106,6 @@ for epoch in range(1, 101):
             
             # If the Fuzzball has surface bits, leak them back to the vacuum pool
             if stored_microstates[i] > 0:
-                # Calculate capacity S = pi * r_s^2
                 capacity = 3.14159 * (2 * m_eff_i)**2
                 while capacity < stored_microstates[i] and stored_microstates[i] > 0:
                     stored_microstates[i] -= 1
@@ -125,18 +127,22 @@ for epoch in range(1, 101):
     
     total_inf = p_bulk + s_surf + int(dark_matter_pool)
     print(f"\n--- EPOCH {epoch} ---")
+    
+    # Process events for printing and logging
+    epoch_events = list(set(events))[:2] if events else ["None"]
     if events:
-        for e in list(set(events))[:2]: print(e)
+        for e in epoch_events: print(e)
+        
     print(f"Bulk Matter: {p_bulk} | Horizon Bits: {s_surf} | Vacuum Pool: {int(dark_matter_pool)}")
     print(f"System Integrity: {total_inf}/{int(INITIAL_UNIVERSE_BITS)} Bits")
     
-    time.sleep(0.3)
-    import csv
-
-def export_telemetry_to_csv(filename="omega_run_100_epochs.csv"):
-    # This assumes you saved your loop data into a list called 'telemetry_data'
-    # Example format: [[1, 33, 0, 967, 1000, "Recombined Matter"], ...]
+    # <-- ADDED: Save this epoch's data to our telemetry list
+    telemetry_data.append([epoch, p_bulk, s_surf, int(dark_matter_pool), total_inf, " | ".join(epoch_events)])
     
+    time.sleep(0.3)
+
+# --- 4. CSV EXPORT FUNCTION (Moved outside the loop) ---
+def export_telemetry_to_csv(filename="omega_run_100_epochs.csv"):
     with open(filename, mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(["Epoch", "Bulk_Matter", "Horizon_Bits", "Vacuum_Pool", "Total_Integrity", "Notable_Events"])
@@ -144,5 +150,5 @@ def export_telemetry_to_csv(filename="omega_run_100_epochs.csv"):
         
     print(f"\n>>> Telemetry successfully exported to {filename}")
 
-# Call this after the 100 epochs finish
-# export_telemetry_to_csv()
+# Call the export function after all 100 epochs are finished
+export_telemetry_to_csv()
