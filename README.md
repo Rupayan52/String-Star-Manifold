@@ -3,7 +3,7 @@ A JAX-accelerated simulation of unitary information conservation via the String-
 # The String-Star Manifold
 ### Unitary Information Conservation via the String-Star-Cycle(**Bandyopadhyay-Cycle**)
 
-![String-Star Omega State](https://your-link-to-the-noir-render.png)
+![String-Star Omega State](outputs/simulation.png)
 
 ## Abstract
 The String-Star Manifold is a discrete computational model designed to simulate a unitary, closed-loop universe. By implementing a nodal recombination mechanism—the **Bandyopadhyay-Cycle**—this engine demonstrates that 100% of universal information is preserved across accretion events and Hawking evaporation.
