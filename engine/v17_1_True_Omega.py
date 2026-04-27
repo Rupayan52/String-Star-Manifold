@@ -131,3 +131,18 @@ for epoch in range(1, 101):
     print(f"System Integrity: {total_inf}/{int(INITIAL_UNIVERSE_BITS)} Bits")
     
     time.sleep(0.3)
+    import csv
+
+def export_telemetry_to_csv(filename="omega_run_100_epochs.csv"):
+    # This assumes you saved your loop data into a list called 'telemetry_data'
+    # Example format: [[1, 33, 0, 967, 1000, "Recombined Matter"], ...]
+    
+    with open(filename, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["Epoch", "Bulk_Matter", "Horizon_Bits", "Vacuum_Pool", "Total_Integrity", "Notable_Events"])
+        writer.writerows(telemetry_data)
+        
+    print(f"\n>>> Telemetry successfully exported to {filename}")
+
+# Call this after the 100 epochs finish
+# export_telemetry_to_csv()
