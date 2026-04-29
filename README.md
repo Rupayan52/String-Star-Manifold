@@ -41,6 +41,7 @@ You do not need to install anything to verify this engine. A complete, interacti
 * **Bekenstein-Hawking Thermodynamics:** Closes the cosmological loop by simulating the evaporation of mature Fuzzballs, redepositing integer bits back into the vacuum pool to fuel future expansion.
 
 ## 🎥 Cinematic 3D Visualization
+![Omega-FLRW Simulation Video](outputs/Visualization.gif)
 The Colab notebook includes a custom `matplotlib` 3D animation renderer that visually maps the mathematics of the simulation into a high-fidelity video file. 
 
 When you run the visualization cell, the engine generates an MP4 animation demonstrating three explicit physical phenomena:
