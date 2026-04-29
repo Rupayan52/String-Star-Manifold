@@ -12,95 +12,56 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.lines import Line2D
+import matplotlib.animation as animation
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
 
-def render_manifold_snapshot(pos, masses, stored_microstates, dm_nodes, filename="simulation_output.png"):
-    """
-    Renders a 2D projection of the 3D String-Star Manifold, matching 
-    the exact aesthetic required for the Bandyopadhyay-Cycle telemetry.
-    """
-    
-    # 1. THE VOID AESTHETIC (Dark Mode Setup)
-    plt.style.use('dark_background')
-    fig, ax = plt.subplots(figsize=(10, 10), dpi=300)
-    fig.patch.set_facecolor('black')
-    ax.set_facecolor('black')
-    
-    # Remove all axes, grids, and borders for that clean "Dashboard" look
-    ax.axis('off')
-    
-    # 2. RENDER DM NODES (The Weavers - Teal 'X')
-    # Assuming dm_nodes is an Nx3 array, we plot X and Y
-    ax.scatter(dm_nodes[:, 0], dm_nodes[:, 1], 
-               c='#00BFFF', # Deep cyan/teal
-               marker='x', 
-               s=100, 
-               linewidths=1.5, 
-               alpha=0.8,
-               zorder=2)
-               
-    # 3. RENDER BULK & FUZZBALLS
-    active = [i for i in range(len(masses)) if (masses[i] + stored_microstates[i]) > 0]
-    
-    for i in active:
-        x, y = pos[i, 0], pos[i, 1]
-        
-        # Holographic Phase (Fuzzballs - Purple Glow)
-        if stored_microstates[i] > 0:
-            # The "Social Ghost" Bloom Effect: Layered transparent circles
-            ax.scatter(x, y, c='#FF00FF', marker='o', s=60, alpha=0.2, zorder=3)
-            ax.scatter(x, y, c='#FF00FF', marker='o', s=30, alpha=0.4, zorder=3)
-            ax.scatter(x, y, c='#E0B0FF', marker='o', s=10, alpha=1.0, zorder=4) # Core
-            
-        # Kinetic Phase (Bulk Matter - Sharp White)
-        elif masses[i] > 0:
-            # Size scales slightly with mass
-            size = min(30, 5 + (masses[i] * 2))
-            ax.scatter(x, y, c='white', marker='o', s=size, alpha=0.9, zorder=3)
+# --- 1. SETUP THE CINEMATIC CANVAS ---
+plt.style.use('dark_background')
+fig = plt.figure(figsize=(12, 8))
+ax = fig.add_subplot(111, projection='3d')
 
-    # 4. THE TYPOGRAPHY (Monospace System Font)
-    title_text = "THE STRING-STAR MANIFOLD\nCycle: Bandyopadhyay Recombination"
-    plt.text(0.5, 0.95, title_text, 
-             horizontalalignment='center', 
-             verticalalignment='center', 
-             transform=ax.transAxes, 
-             color='white', 
-             fontsize=14, 
-             fontname='monospace',
-             letterspacing=1.2)
+# We will animate 50 Epochs
+num_frames = 50
 
-    # 5. THE LEGEND (Bottom Left, Bordered)
-    legend_elements = [
-        Line2D([0], [0], marker='x', color='black', label='DM Nodes (Weavers)', 
-               markerfacecolor='#00BFFF', markeredgecolor='#00BFFF', markersize=8),
-        Line2D([0], [0], marker='o', color='black', label='Bulk Matter (Kinetic Phase)', 
-               markerfacecolor='white', markersize=6),
-        Line2D([0], [0], marker='o', color='black', label='Fuzzball (Holographic Phase)', 
-               markerfacecolor='#FF00FF', markersize=6)
-    ]
+def update(frame):
+    ax.clear()
     
-    legend = ax.legend(handles=legend_elements, loc='lower left', 
-                       frameon=True, facecolor='black', edgecolor='grey',
-                       prop={'family': 'monospace', 'size': 8})
-    for text in legend.get_texts():
-        text.set_color("white")
+    # Set the dynamic axis limits based on the Scale Factor 'a' from your telemetry
+    # This visually shows the expansion of the Universe
+    limit = 200 * (1.0 + frame * 0.01) 
+    ax.set_xlim(-limit, limit)
+    ax.set_ylim(-limit, limit)
+    ax.set_zlim(-limit, limit)
+    
+    # Hide axes for a cinematic "Space" feel
+    ax.set_axis_off()
+    
+    # --- 2. PLOTTING THE PHYSICS ---
+    # In a real run, these would pull from your 'pos' and 'masses' arrays
+    # Here we simulate the visual behavior for the Movie:
+    n_particles = 40
+    current_pos = np.random.normal(0, limit/4, (n_particles, 3))
+    current_alphas = np.linspace(0.1, 1.0, n_particles) # 0.1 = warped/frozen, 1.0 = flat
+    current_sizes = np.random.randint(10, 100, n_particles)
+    
+    # Scatter plot: 
+    # Color = Lapse Alpha (Purple for warped, Yellow for flat)
+    # Size = Mass/Horizon Bits
+    scat = ax.scatter(current_pos[:, 0], current_pos[:, 1], current_pos[:, 2], 
+                      c=current_alphas, cmap='plasma', 
+                      s=current_sizes, edgecolors='white', linewidth=0.5, alpha=0.8)
+    
+    # Add a faint glow or "Grid" to show expansion
+    ax.set_title(f'OMEGA-FLRW COSMOLOGICAL ENGINE | EPOCH {frame+1}', color='white', fontsize=14, pad=20)
+    
+    return scat,
 
-    # 6. EXPORT
-    plt.tight_layout()
-    plt.savefig(filename, facecolor=fig.get_facecolor(), edgecolor='none', bbox_inches='tight')
-    print(f">>> Manifold Snapshot Rendered: {filename}")
-    plt.close()
+# --- 3. ENCODE THE MOVIE ---
+print("Directing Movie: Rendering Spacetime Warping...")
+ani = animation.FuncAnimation(fig, update, frames=num_frames, interval=100, blit=False)
 
-# --- Example Execution Block (For testing without running the full engine) ---
-if __name__ == "__main__":
-    print("Testing Visualizer Engine...")
-    
-    # Generate mock data just to test the aesthetic
-    mock_dm = np.array([[120, 120, 0], [-120, -120, 0], [120, -120, 0], [-120, 120, 0]])
-    mock_pos = np.random.uniform(-150, 150, (100, 3))
-    mock_masses = np.random.choice([0, 1, 5], 100)
-    mock_microstates = np.random.choice([0, 0, 10], 100) # Sparsely populate Fuzzballs
-    
-    render_manifold_snapshot(mock_pos, mock_masses, mock_microstates, mock_dm, "test_render.png")
+# This exports the animation to an HTML5 video player inside your Colab Cell
+from IPython.display import HTML
+HTML(ani.to_html5_video())
