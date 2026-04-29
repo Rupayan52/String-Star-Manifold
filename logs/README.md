@@ -22,3 +22,6 @@ The `omega_run_100_epochs.csv` file tracks the state of the universe at the end 
 * `Vacuum_Pool`: Ambient radiation waiting for Nodal Recombination ($I_{vacuum}$).
 * `Total_Integrity`: The absolute sum of all three phases. **Must equal exactly 1000.**
 * `Notable_Events`: Major phase transitions (e.g., Holographic Shifts, Hawking Recycling).
+* **Hubble_H:** The instantaneous expansion rate of the universe calculated via the Unified Friedmann Equation.
+* **Scale_Factor_a:** The global multiplier ($a(t)$) for the universe's volume, tracking the physical stretching of the spatial hash grid.
+* **Avg_Lapse_Alpha:** The average value of the Lapse Function ($\alpha$) across all active particles. Tracks Gravitational Time Dilation (1.0 = flat spacetime, approaches 0.1 = time "freezing" near Fuzzball horizons).
