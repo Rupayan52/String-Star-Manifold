@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v13.0 Ultimate Cyclic Manifold (Laptop Optimized)</title>
+    <style>
+        body { 
+            margin: 0; 
+            background-color: #050505; 
+            color: #00ffcc; 
+            font-family: 'Courier New', monospace; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #sim-container {
+            position: relative;
+            width: 960px;
+            height: 540px;
+            border: 1px solid #333;
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.1);
+            background-color: #0a0a0a;
+            overflow: hidden;
+        }
+        canvas { 
+            display: block; 
+            cursor: crosshair; 
+        }
+        #hud { 
+            position: absolute; 
+            top: 15px; 
+            left: 15px; 
+            background: rgba(0, 0, 0, 0.85); 
+            padding: 15px; 
+            border: 1px solid #333; 
+            border-radius: 4px; 
+            pointer-events: none; 
+            width: 250px; 
+            text-transform: uppercase; 
+        }
+        h1 { 
+            font-size: 14px; 
+            color: #fff; 
+            margin-top: 0; 
+            border-bottom: 1px solid #333; 
+            padding-bottom: 8px; 
+            letter-spacing: 1px; 
+        }
+        .metric { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 6px; 
+            font-size: 11px; 
+        }
+        .highlight { color: #ff0055; font-weight: bold; }
+        .bounce { color: #00ffcc; font-weight: bold; animation: flash 0.5s ease-out; }
+        
+        #controls { 
+            position: absolute; 
+            bottom: 15px; 
+            left: 15px; 
+            background: rgba(0, 0, 0, 0.85); 
+            padding: 10px; 
+            border: 1px solid #333; 
+            border-radius: 4px; 
+            font-size: 10px; 
+            color: #aaa; 
+            display: flex;
+            gap: 15px;
+        }
+        .control-group { display: flex; flex-direction: column; gap: 4px;}
+        input[type=range] { width: 100px; }
+
+        @keyframes flash { 0% { text-shadow: 0 0 10px #00ffcc; } 100% { text-shadow: none; } }
+    </style>
+</head>
+<body>
+
+    <div id="sim-container">
+        <div id="hud">
+            <h1>v13.0 Telemetry</h1>
+            <div class="metric"><span>Epoch:</span> <span id="t-epoch">0</span></div>
+            <div class="metric"><span>Vacuum Energy:</span> <span id="t-vac">1000.0</span></div>
+            <div class="metric"><span>Grid Scale (L):</span> <span id="t-l">1.00</span></div>
+            <div class="metric"><span>Avg Lapse (α):</span> <span id="t-alpha">1.000</span></div>
+            <div class="metric"><span>Max Fuzzball:</span> <span id="t-maxf">1.0</span></div>
+            <div class="metric"><span>State:</span> <span id="t-state">CLUMP</span></div>
+        </div>
+
+        <div id="controls">
+            <div class="control-group">
+                <label>Planck Threshold (ρ)</label>
+                <input type="range" id="rho-slider" min="50" max="300" value="150">
+            </div>
+            <div class="control-group">
+                <label>Quintessence (κ)</label>
+                <input type="range" id="kappa-slider" min="0.01" max="0.1" step="0.01" value="0.05">
+            </div>
+            <div class="control-group" style="justify-content: flex-end;">
+                <span>[CLICK] Inject Mass</span>
+            </div>
+        </div>
+
+        <canvas id="simCanvas"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('sim-container');
+
+        // Fixed Resolution for 16-inch laptops (960x540)
+        const logicalWidth = 960;
+        const logicalHeight = 540;
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = logicalWidth * dpr;
+            canvas.height = logicalHeight * dpr;
+            ctx.scale(dpr, dpr);
+            canvas.style.width = logicalWidth + 'px';
+            canvas.style.height = logicalHeight + 'px';
+        }
+        resizeCanvas();
+
+        // --- PHYSICS CONSTANTS & STATE ---
+        const G = 0.4; 
+        let epoch = 0;
+        let vacuumEnergy = 800;
+        let gridScale = 1.0;
+        let stateIndicator = "CLUMP";
+
+        // Viewport center
+        let cx = logicalWidth / 2;
+        let cy = logicalHeight / 2;
+        
+        // Inject Mass on Click
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const px = (e.clientX - rect.left - cx) / gridScale;
+            const py = (e.clientY - rect.top - cy) / gridScale;
+            particles.push(new Particle(px, py, 25, 0, 0));
+        });
+
+        // --- PARTICLE CLASS ---
+        class Particle {
+            constructor(x, y, mass, vx = 0, vy = 0) {
+                this.x = x; this.y = y; this.mass = mass;
+                this.vx = vx; this.vy = vy;
+                this.updateRadius();
+                this.alpha = 1.0; // Lapse Function
+            }
+            updateRadius() { this.radius = Math.max(1.5, Math.sqrt(this.mass)); }
+            
+            draw(ctx) {
+                // Color Map: 1.0 (Fast) = Yellow, 0.1 (Frozen) = Purple
+                let colorRatio = Math.max(0, Math.min(1, (this.alpha - 0.1) / 0.9));
+                let r = Math.floor(150 * (1 - colorRatio) + 255 * colorRatio);
+                let g = Math.floor(0 * (1 - colorRatio) + 200 * colorRatio);
+                let b = Math.floor(255 * (1 - colorRatio) + 0 * colorRatio);
+                
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+                ctx.fill();
+                
+                if(this.mass > 25) {
+                    ctx.fillStyle = "#fff";
+                    ctx.font = `${10 / gridScale}px Courier New`;
+                    ctx.fillText(`M:${Math.floor(this.mass)}`, this.x + this.radius + 2, this.y - 2);
+                }
+            }
+        }
+
+        let particles = [];
+        for(let i=0; i<120; i++) {
+            particles.push(new Particle((Math.random()-0.5)*800, (Math.random()-0.5)*400, Math.random() * 2 + 1, (Math.random()-0.5), (Math.random()-0.5)));
+        }
+
+        // --- RENDER LOOP ---
+        function animate() {
+            // Read UI Sliders
+            const RHO_PLANCK = parseFloat(document.getElementById('rho-slider').value);
+            const KAPPA = parseFloat(document.getElementById('kappa-slider').value);
+
+            ctx.clearRect(0, 0, logicalWidth, logicalHeight);
+
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.scale(gridScale, gridScale);
+
+            // 1. Draw Quintessence Grid
+            ctx.strokeStyle = 'rgba(0, 255, 204, 0.08)';
+            ctx.lineWidth = 1 / gridScale;
+            let step = 40;
+            ctx.beginPath();
+            for(let x = -1000; x < 1000; x += step) { ctx.moveTo(x, -1000); ctx.lineTo(x, 1000); }
+            for(let y = -1000; y < 1000; y += step) { ctx.moveTo(-1000, y); ctx.lineTo(1000, y); }
+            ctx.stroke();
+
+            // 2. Physics & Interactions
+            let maxMass = 0;
+            let sumAlpha = 0;
+            let newParticles = [];
+            stateIndicator = "CLUMP";
+
+            for (let i = 0; i < particles.length; i++) {
+                let p1 = particles[i];
+                let fx = 0, fy = 0, localPhi = 0;
+
+                for (let j = 0; j < particles.length; j++) {
+                    if (i === j) continue;
+                    let p2 = particles[j];
+                    let dx = p2.x - p1.x; let dy = p2.y - p1.y;
+                    let distSq = dx*dx + dy*dy; let dist = Math.sqrt(distSq);
+
+                    if (dist < p1.radius + p2.radius) {
+                        // Accretion
+                        if(p1.mass >= p2.mass && p2.mass > 0) {
+                            p1.vx = (p1.vx * p1.mass + p2.vx * p2.mass) / (p1.mass + p2.mass);
+                            p1.vy = (p1.vy * p1.mass + p2.vy * p2.mass) / (p1.mass + p2.mass);
+                            p1.mass += p2.mass;
+                            p1.updateRadius();
+                            p2.mass = 0; 
+                        }
+                    } else {
+                        let force = (G * p1.mass * p2.mass) / (distSq + 15); // Softening
+                        fx += force * (dx / dist); fy += force * (dy / dist);
+                        localPhi -= (G * p2.mass) / dist; 
+                    }
+                }
+
+                if (p1.mass > 0) {
+                    // Relativistic Lapse
+                    p1.alpha = Math.max(0.1, 1.0 + (localPhi / 100)); 
+                    
+                    p1.vx += (fx / p1.mass) * p1.alpha;
+                    p1.vy += (fy / p1.mass) * p1.alpha;
+                    p1.x += p1.vx * p1.alpha;
+                    p1.y += p1.vy * p1.alpha;
+
+                    // Viewport Boundary Collision (Keeps action on screen)
+                    let boundX = (logicalWidth/2) / gridScale;
+                    let boundY = (logicalHeight/2) / gridScale;
+                    
+                    if (p1.x > boundX) { p1.x = boundX; p1.vx *= -0.8; }
+                    if (p1.x < -boundX) { p1.x = -boundX; p1.vx *= -0.8; }
+                    if (p1.y > boundY) { p1.y = boundY; p1.vy *= -0.8; }
+                    if (p1.y < -boundY) { p1.y = -boundY; p1.vy *= -0.8; }
+
+                    if(p1.mass > maxMass) maxMass = p1.mass;
+                    sumAlpha += p1.alpha;
+
+                    // THE QUANTUM BOUNCE
+                    if (p1.mass >= RHO_PLANCK) {
+                        stateIndicator = "BOUNCE";
+                        vacuumEnergy += p1.mass * 0.5; 
+                        
+                        let fragments = 12;
+                        for(let f=0; f<fragments; f++) {
+                            let angle = (Math.PI * 2 / fragments) * f;
+                            let speed = 8 + Math.random()*4;
+                            newParticles.push(new Particle(p1.x + Math.cos(angle)*15, p1.y + Math.sin(angle)*15, (p1.mass * 0.5)/fragments, Math.cos(angle)*speed, Math.sin(angle)*speed));
+                        }
+                        
+                        ctx.beginPath();
+                        ctx.arc(p1.x, p1.y, 200, 0, Math.PI*2);
+                        ctx.fillStyle = "rgba(0, 255, 204, 0.4)";
+                        ctx.fill();
+
+                        p1.mass = 0; 
+                    }
+                }
+            }
+
+            particles = particles.filter(p => p.mass > 0).concat(newParticles);
+            for (let p of particles) p.draw(ctx);
+            ctx.restore();
+
+            // 3. Dynamic Quintessence Metric Expansion
+            let targetGridScale = 0.6 + (vacuumEnergy * KAPPA * 0.05);
+            // Cap scale so it doesn't zoom out too far on small screens
+            targetGridScale = Math.min(1.8, Math.max(0.4, targetGridScale)); 
+            
+            gridScale += (targetGridScale - gridScale) * 0.08; 
+            
+            if(stateIndicator === "CLUMP" && particles.length > 0) {
+                 vacuumEnergy = Math.max(0, vacuumEnergy - 2.0); // Drain vacuum
+            }
+
+            // 4. Update HUD
+            epoch++;
+            document.getElementById('t-epoch').innerText = epoch;
+            document.getElementById('t-vac').innerText = vacuumEnergy.toFixed(1);
+            document.getElementById('t-l').innerText = gridScale.toFixed(3);
+            document.getElementById('t-alpha').innerText = particles.length ? (sumAlpha / particles.length).toFixed(3) : "1.000";
+            document.getElementById('t-maxf').innerText = maxMass.toFixed(1);
+            
+            let stateEl = document.getElementById('t-state');
+            stateEl.innerText = stateIndicator;
+            stateEl.className = stateIndicator === "BOUNCE" ? "bounce" : "highlight";
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
