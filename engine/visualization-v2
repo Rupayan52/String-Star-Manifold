@@ -1,0 +1,179 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from matplotlib.patches import Circle
+from IPython.display import HTML
+
+# ==============================================================================
+# v13.0 Manifold MP4 Generator (Force-Redraw Engine)
+# ==============================================================================
+
+# --- PHYSICS CONSTANTS ---
+N_PARTICLES = 150
+G = 0.5
+RHO_PLANCK = 150.0
+KAPPA = 0.05
+FRAMES = 250  # ~8 seconds of footage
+
+# --- STATE VARIABLES ---
+epoch = 0
+vacuum_energy = 800.0
+grid_scale = 1.0
+
+# Arrays for physics
+pos = np.random.uniform(-400, 400, (N_PARTICLES, 2))
+vel = np.random.uniform(-2, 2, (N_PARTICLES, 2))
+masses = np.random.uniform(1, 4, N_PARTICLES)
+alphas = np.ones(N_PARTICLES)
+
+# Supermassive seed to trigger a bounce quickly
+masses[0] = 60.0 
+pos[0] = [0, 0]
+vel[0] = [0, 0]
+
+# List to hold active explosion flashes (x, y, radius, alpha)
+explosions = []
+
+# --- MATPLOTLIB SETUP ---
+fig, ax = plt.subplots(figsize=(8, 4.5), facecolor='#050505', dpi=120)
+fig.subplots_adjust(left=0, right=1, bottom=0, top=1)
+
+print(">>> Initiating v13.0 True Frame-by-Frame Render...")
+
+def update(frame):
+    global epoch, vacuum_energy, grid_scale, pos, vel, masses, alphas, explosions
+    epoch += 1
+    state_indicator = "CLUMP"
+    
+    fx = np.zeros(N_PARTICLES)
+    fy = np.zeros(N_PARTICLES)
+    local_phi = np.zeros(N_PARTICLES)
+    
+    # 1. ACCRETION & GRAVITY
+    for i in range(N_PARTICLES):
+        if masses[i] <= 0: continue
+        for j in range(i + 1, N_PARTICLES):
+            if masses[j] <= 0: continue
+            
+            dx = pos[j, 0] - pos[i, 0]
+            dy = pos[j, 1] - pos[i, 1]
+            dist_sq = dx**2 + dy**2
+            dist = np.sqrt(dist_sq)
+            
+            r_i = np.sqrt(masses[i]) * 1.5
+            r_j = np.sqrt(masses[j]) * 1.5
+            
+            if dist < (r_i + r_j):
+                if masses[i] >= masses[j]:
+                    vel[i] = (vel[i]*masses[i] + vel[j]*masses[j]) / (masses[i] + masses[j])
+                    masses[i] += masses[j]
+                    masses[j] = 0
+                else:
+                    vel[j] = (vel[i]*masses[i] + vel[j]*masses[j]) / (masses[i] + masses[j])
+                    masses[j] += masses[i]
+                    masses[i] = 0
+            else:
+                force = (G * masses[i] * masses[j]) / (dist_sq + 20)
+                f_vec_x = force * (dx / dist)
+                f_vec_y = force * (dy / dist)
+                
+                fx[i] += f_vec_x
+                fy[i] += f_vec_y
+                fx[j] -= f_vec_x
+                fy[j] -= f_vec_y
+                
+                local_phi[i] -= (G * masses[j]) / dist
+                local_phi[j] -= (G * masses[i]) / dist
+
+    # 2. KINEMATICS & QUANTUM BOUNCE
+    for i in range(N_PARTICLES):
+        if masses[i] > 0:
+            alphas[i] = max(0.1, 1.0 + (local_phi[i] / 150.0))
+            
+            vel[i, 0] += (fx[i] / masses[i]) * alphas[i]
+            vel[i, 1] += (fy[i] / masses[i]) * alphas[i]
+            pos[i, 0] += vel[i, 0] * alphas[i]
+            pos[i, 1] += vel[i, 1] * alphas[i]
+            
+            bound_x, bound_y = 500 / grid_scale, 281 / grid_scale
+            if pos[i, 0] > bound_x: pos[i, 0] = bound_x; vel[i, 0] *= -0.8
+            if pos[i, 0] < -bound_x: pos[i, 0] = -bound_x; vel[i, 0] *= -0.8
+            if pos[i, 1] > bound_y: pos[i, 1] = bound_y; vel[i, 1] *= -0.8
+            if pos[i, 1] < -bound_y: pos[i, 1] = -bound_y; vel[i, 1] *= -0.8
+
+            if masses[i] >= RHO_PLANCK:
+                state_indicator = "BOUNCE"
+                vacuum_energy += masses[i] * 0.5
+                
+                fragments = 12
+                mass_frag = (masses[i] * 0.5) / fragments
+                for f in range(fragments):
+                    angle = (2 * np.pi / fragments) * f
+                    speed = 10.0 + np.random.uniform(0, 5)
+                    empty_slots = np.where(masses == 0)[0]
+                    if len(empty_slots) > 0:
+                        slot = empty_slots[0]
+                        masses[slot] = mass_frag
+                        pos[slot] = [pos[i, 0] + np.cos(angle)*15, pos[i, 1] + np.sin(angle)*15]
+                        vel[slot] = [np.cos(angle)*speed, np.sin(angle)*speed]
+                
+                # Register explosion
+                explosions.append([pos[i, 0], pos[i, 1], 150, 0.5])
+                masses[i] = 0
+
+    # 3. METRIC EXPANSION
+    target_grid = min(1.8, max(0.4, 0.6 + (vacuum_energy * KAPPA * 0.05)))
+    grid_scale += (target_grid - grid_scale) * 0.1
+    if state_indicator == "CLUMP": vacuum_energy = max(0, vacuum_energy - 3.0)
+
+    # ==========================================
+    # 4. FORCE REDRAW EVERY PIXEL (The Fix)
+    # ==========================================
+    ax.clear() # Wipe the canvas completely
+    ax.set_facecolor('#050505')
+    ax.set_xlim(-500, 500)
+    ax.set_ylim(-281, 281)
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+    # Draw Grid
+    step = 40 * grid_scale
+    for x in np.arange(-1000, 1000, step):
+        ax.plot([x, x], [-1000, 1000], color='#00ffcc', alpha=0.1, lw=1)
+    for y in np.arange(-1000, 1000, step):
+        ax.plot([-1000, 1000], [y, y], color='#00ffcc', alpha=0.1, lw=1)
+
+    # Draw Explosions
+    for exp in explosions:
+        circle = Circle((exp[0]*grid_scale, exp[1]*grid_scale), exp[2]*grid_scale, color='#00ffcc', alpha=exp[3])
+        ax.add_patch(circle)
+        exp[3] -= 0.05 # Fade out
+    explosions[:] = [e for e in explosions if e[3] > 0] # Remove dead explosions
+
+    # Draw Particles
+    active = masses > 0
+    display_pos = pos[active] * grid_scale
+    display_sizes = (np.sqrt(masses[active]) * 3 * grid_scale)**2 
+    display_colors = alphas[active]
+    
+    ax.scatter(display_pos[:,0], display_pos[:,1], s=display_sizes, c=display_colors, cmap='plasma', vmin=0.1, vmax=1.0, edgecolors='none')
+
+    # Draw HUD
+    ax.text(-480, 250, f"EPOCH: {epoch:04d}", color="#fff", fontfamily="monospace", fontsize=9)
+    ax.text(-480, 225, f"VACUUM: {vacuum_energy:.1f}", color="#00ffcc", fontfamily="monospace", fontsize=9)
+    ax.text(-480, 200, f"GRID L: {grid_scale:.3f}", color="#fff", fontfamily="monospace", fontsize=9)
+    ax.text(-480, 175, f"STATE: {state_indicator}", color="#00ffcc" if state_indicator == "BOUNCE" else "#ff0055", fontfamily="monospace", fontsize=10, fontweight='bold')
+
+    if frame % 25 == 0:
+        print(f"Rendering frame {frame}/{FRAMES}...")
+
+# Compile using FFMPEG instead of Pillow
+ani = animation.FuncAnimation(fig, update, frames=FRAMES, interval=33)
+
+file_path = 'v13_manifold.mp4'
+ani.save(file_path, writer='ffmpeg', fps=30)
+print(f"\n>>> SUCCESS: Render complete. Saved to '{file_path}'.")
+
+# Display inline in Colab so you can see it immediately
+plt.close(fig)
+HTML(ani.to_html5_video())
