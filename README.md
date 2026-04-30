@@ -40,7 +40,7 @@ You do not need to install anything to verify this engine. A complete, interacti
 * **Relativistic Time Dilation:** Utilizes a Schwarzschild-de Sitter Lapse Function ($\alpha$) to physically slow and freeze the local kinematics of particles as they approach massive gravity wells.
 
 ## 🎥 Cinematic 3D Visualization
-![Omega-FLRW Simulation Video](outputs/Visualization.gif)
+![Omega-FLRW Simulation Video](outputs/Visualization_v2.gif)
 
 The Colab notebook includes a custom `matplotlib` 3D animation renderer that visually maps the mathematics of the simulation into a high-fidelity video file, demonstrating three explicit physical phenomena:
 * **The Breathing Manifold (Spatial Expansion/Contraction):** The coordinate grid dynamically stretches and shrinks based on the tension between gravity and the Quintessence field.
