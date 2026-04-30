@@ -17,7 +17,9 @@
 # Framework: Loop Quantum Cosmology & Dynamic Quintessence
 # ==============================================================================
 
+
 import os
+import csv # Added for telemetry logging
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 
 import jax
@@ -48,7 +50,7 @@ dark_matter_nodes = np.array([
     [180.0, 0.0, -50.0],   [-180.0, 0.0, 50.0]
 ], dtype=float)
 
-# --- EXACT PHYSICAL CONSTANTS (Natural Units) ---
+# --- EXACT PHYSICAL CONSTANTS ---
 G = 1.0 
 C = 1.0 
 H_BAR = 1.0 
@@ -60,6 +62,9 @@ V_PLANCK_STAR = 100.0 # The fixed quantum volume of the black hole core
 
 INITIAL_UNIVERSE_BITS = 1000.0 
 dark_matter_pool = INITIAL_UNIVERSE_BITS 
+
+# --- TELEMETRY LOG ---
+telemetry_log = []
 
 # --- JAX ARCHITECTURE ---
 @jax.jit
@@ -208,10 +213,40 @@ for epoch in range(1, 501):
             else: masses[i] -= rad_amount
             dark_matter_pool += rad_amount
 
+    # --- DATA COLLECTION ---
+    max_m = float(np.max(masses + stored_microstates)) if len(active) > 0 else 0.0
+    total_inf = float(np.sum(masses) + np.sum(stored_microstates) + dark_matter_pool)
+    status_indicator = "White Hole Bounce!" if np.any(white_hole_flags) else "Gravitational Clumping"
+    
+    # Save to memory for CSV export
+    telemetry_log.append({
+        "Epoch": epoch,
+        "Vacuum_Energy": round(float(dark_matter_pool), 2),
+        "Spatial_Scale_L": round(float(curr_grid_size), 2),
+        "Avg_Lapse_Alpha": round(float(avg_alpha), 4),
+        "Max_Mass": round(float(max_m), 2),
+        "Phase_State": "BOUNCE" if np.any(white_hole_flags) else "CLUMP",
+        "Unitarity_Index": round(total_inf / INITIAL_UNIVERSE_BITS, 6)
+    })
+
+    # --- DETAILED CONSOLE OUTPUT ---
     if epoch % 50 == 0 or epoch == 1:
-        max_m = np.max(masses + stored_microstates) if len(active) > 0 else 0
-        total_inf = np.sum(masses) + np.sum(stored_microstates) + dark_matter_pool
-        status = "BOUNCE" if np.any(white_hole_flags) else "CLUMP"
-        print(f"EPOCH {epoch:3d} | Vac: {dark_matter_pool:5.1f} | L: {curr_grid_size:6.1f} | α: {avg_alpha:.3f} | Max_F: {max_m:5.1f} | S: {status} | I: {total_inf/INITIAL_UNIVERSE_BITS:.6f}")
+        print(f"\n[{'='*20} EPOCH {epoch:04d} {'='*20}]")
+        print(f" ► System Phase     : {status_indicator}")
+        print(f" ► Vacuum Energy    : {dark_matter_pool:.2f} bits (Available for Recombination)")
+        print(f" ► Spatial Grid (L) : {curr_grid_size:.2f} units (Metric Expansion Scale)")
+        print(f" ► Avg Time Dilation: {avg_alpha:.4f} α (1.0 = Flat Space, <1.0 = Time Freezing)")
+        print(f" ► Heaviest Fuzzball: {max_m:.2f} Mass Units")
+        print(f" ► Unitarity Check  : {total_inf/INITIAL_UNIVERSE_BITS:.6f} I (Target: 1.000000)")
+
+# --- EXPORT DATASET ---
+csv_filename = "v13_telemetry_dataset.csv"
+keys = telemetry_log[0].keys()
+
+with open(csv_filename, 'w', newline='') as output_file:
+    dict_writer = csv.DictWriter(output_file, fieldnames=keys)
+    dict_writer.writeheader()
+    dict_writer.writerows(telemetry_log)
 
 print("\n>>> v13.0 Engine Operational. The Universe Breathes.")
+print(f">>> Telemetry successfully exported to: '{csv_filename}'")
