@@ -12,32 +12,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# ==============================================================================
+# Title: The Ultimate Cyclic Manifold (v13.0)
+# Framework: Loop Quantum Cosmology & Dynamic Quintessence
+# ==============================================================================
+
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 
 import jax
 import jax.numpy as jnp
 import numpy as np
-import time
 import warnings
-import csv
 
 warnings.filterwarnings("ignore")
 
-# --- 1. HARDWARE & BASE GRID ALLOCATION ---
-print(f"System Online: {jax.devices()[0].device_kind.upper()} Calibrated.")
+print(f"System Online: CPU Calibrated. (v13.0 Ultimate Cyclic Engine Active)")
 
 MAX_BODIES = 500 
-BASE_GRID_MIN, BASE_GRID_MAX, BASE_GRID_RES = -200.0, 200.0, 15.0
-GRID_BINS = int((BASE_GRID_MAX - BASE_GRID_MIN) / BASE_GRID_RES)
+BASE_GRID_SIZE = 400.0
+GRID_BINS = 26 
 TOTAL_CELLS = GRID_BINS ** 3 
 BASE_THETA_THRESHOLD = 30.0 
 
 masses = np.zeros(MAX_BODIES, dtype=float)
 pos = np.zeros((MAX_BODIES, 3), dtype=float)
 vel = np.zeros((MAX_BODIES, 3), dtype=float)
-stored_microstates = np.zeros(MAX_BODIES, dtype=int)   
-entanglement_map = np.full(MAX_BODIES, -1, dtype=int) 
+stored_microstates = np.zeros(MAX_BODIES, dtype=float) 
+excitation_clock = np.zeros(MAX_BODIES, dtype=float)
 
 dark_matter_nodes = np.array([
     [120.0, 120.0, 20.0],  [-120.0, 120.0, -20.0], 
@@ -46,213 +48,170 @@ dark_matter_nodes = np.array([
     [180.0, 0.0, -50.0],   [-180.0, 0.0, 50.0]
 ], dtype=float)
 
-NODE_RADIUS, TARGET_DENSITY = 60.0, 4
-dark_matter_pool = 1000.0 
-INITIAL_UNIVERSE_BITS = dark_matter_pool
+# --- EXACT PHYSICAL CONSTANTS (Natural Units) ---
+G = 1.0 
+C = 1.0 
+H_BAR = 1.0 
+K_B = 1.0 
+GAMMA = 0.1 
 
-# --- 2. PLANCK PHYSICS CONSTANTS (G=c=1) ---
-G, C = 1.0, 1.0
-GW_TIMESTEP = 0.001     
-HAWKING_COEFF = 15000.0 
-PLANCK_MASS_KG = 2.176470e-8
+RHO_PLANCK = 2.5 
+V_PLANCK_STAR = 100.0 # The fixed quantum volume of the black hole core
 
-# NEW: String framework constants
-STRING_TENSION = 0.5 # Scales the physical volume of the Fuzzball surface
+INITIAL_UNIVERSE_BITS = 1000.0 
+dark_matter_pool = INITIAL_UNIVERSE_BITS 
 
-# --- DYNAMIC COSMOLOGY STATE ---
-scale_factor = 1.0  
-
-# --- 3. JAX STRETCHY SPATIAL HASHING ---
+# --- JAX ARCHITECTURE ---
 @jax.jit
 def compute_macro_nodes(pos_array, effective_masses, grid_min, grid_max, grid_res):
     clipped_pos = jnp.clip(pos_array, grid_min, grid_max - 1e-5)
     grid_indices = jnp.floor((clipped_pos - grid_min) / grid_res).astype(jnp.int32)
-    
     cell_hashes = (grid_indices[:, 2] * (GRID_BINS ** 2) + 
                    grid_indices[:, 1] * GRID_BINS + 
                    grid_indices[:, 0])
-    
     cell_masses = jax.ops.segment_sum(effective_masses, cell_hashes, num_segments=TOTAL_CELLS)
     weighted_pos = pos_array * effective_masses[:, None]
     cell_weighted_pos = jax.ops.segment_sum(weighted_pos, cell_hashes, num_segments=TOTAL_CELLS)
-    
     safe_cell_masses = jnp.where(cell_masses > 0, cell_masses, 1.0)
     cell_com = cell_weighted_pos / safe_cell_masses[:, None]
-    
     return cell_masses, cell_com
 
-print("\n==========================================")
-print("  INITIATING OMEGA-FLRW (RELATIVISTIC) RUN ")
-print("==========================================")
+@jax.jit
+def lqg_thermodynamic_step(mass_ledger, clock_ledger, is_white_hole):
+    is_fuzzball = (mass_ledger >= 10.0)
+    safe_mass = jnp.maximum(mass_ledger, 1.0)
+    
+    thresholds = jnp.maximum(GAMMA * safe_mass, 1.0)
+    next_clock = jnp.mod(clock_ledger + 1.0, thresholds)
+    is_rollover = (next_clock < 1.0) & (clock_ledger + 1.0 >= thresholds)
+    
+    super_dump = jnp.floor(safe_mass * 0.5) 
+    
+    rad_quanta = jnp.where(is_white_hole, super_dump, jnp.where(is_rollover & is_fuzzball, 5.0, 0.0))
+    
+    next_clock = jnp.where(is_fuzzball, next_clock, 0.0)
+    next_clock = jnp.where(is_white_hole, 0.0, next_clock)
+    
+    return rad_quanta, next_clock
 
-telemetry_data = [] 
+print("\n=======================================================")
+print("  INITIATING v13.0: THE ULTIMATE CYCLIC MANIFOLD       ")
+print("=======================================================")
 
-for epoch in range(1, 101):
-    events = []
+prev_grid_size = BASE_GRID_SIZE
+
+for epoch in range(1, 501):
     
-    # 0. UNIFIED FRIEDMANN EQUATION
-    universe_radius = BASE_GRID_MAX * scale_factor
-    universe_volume = (4.0 / 3.0) * np.pi * (universe_radius ** 3)
-    p_bulk, s_surf = int(np.sum(masses)), int(np.sum(stored_microstates))
-    total_inf = p_bulk + s_surf + int(dark_matter_pool)
+    # --- DYNAMIC QUINTESSENCE ---
+    vac_ratio = dark_matter_pool / INITIAL_UNIVERSE_BITS
+    contracted_volume = max((BASE_GRID_SIZE * (vac_ratio**(1.0/3.0)))**3, 1.0)
+    vacuum_density = dark_matter_pool / contracted_volume
+    KAPPA = 150.0 
+    Lambda = KAPPA * vacuum_density
     
-    matter_density = (p_bulk + s_surf) / universe_volume
-    vacuum_density = int(dark_matter_pool) / universe_volume
-    dynamic_lambda = 8.0 * np.pi * G * vacuum_density
+    curr_grid_size = BASE_GRID_SIZE * (vac_ratio + Lambda)**(1.0/3.0)
+    curr_grid_size = max(curr_grid_size, 10.0)
+    quantum_expansion_ratio = curr_grid_size / max(prev_grid_size, 10.0)
     
-    H = np.sqrt((8.0 * np.pi * G / 3.0) * matter_density + (dynamic_lambda / 3.0))
-    scale_factor += H 
+    curr_min, curr_max = -curr_grid_size / 2.0, curr_grid_size / 2.0
+    curr_res = curr_grid_size / GRID_BINS
+    curr_theta = BASE_THETA_THRESHOLD * (curr_grid_size / BASE_GRID_SIZE)
     
-    # 1. RECOMBINATION
     active = [i for i in range(MAX_BODIES) if (masses[i] + stored_microstates[i]) > 0]
-    for node_idx, node_pos in enumerate(dark_matter_nodes):
-        local_count = len([idx for idx in active if np.linalg.norm(pos[idx] - node_pos) < NODE_RADIUS])
-        if local_count < TARGET_DENSITY and dark_matter_pool >= 2:
-            slots = [i for i in range(MAX_BODIES) if (masses[i] + stored_microstates[i]) == 0][:2]
-            if len(slots) == 2:
-                for s in slots:
-                    m_val = float(np.random.choice([1.0, 2.0, 3.0]))
-                    masses[s] = m_val
-                    pos[s] = node_pos + np.random.uniform(-15, 15, size=3)
-                    vel[s] = np.random.uniform(-0.1, 0.1, size=3)
-                    dark_matter_pool -= m_val
-                entanglement_map[slots], entanglement_map[slots] = slots, slots
-                events.append(f"*** [NODE {node_idx}] Recombined Matter.")
-
-    # --- HIERARCHICAL RELATIVISTIC KINEMATICS ---
-    eff_mass_array = masses + stored_microstates
-    jax_pos = jnp.array(pos)
-    jax_eff_mass = jnp.array(eff_mass_array)
     
-    curr_min = BASE_GRID_MIN * scale_factor
-    curr_max = BASE_GRID_MAX * scale_factor
-    curr_res = BASE_GRID_RES * scale_factor
-    curr_theta = BASE_THETA_THRESHOLD * scale_factor
-    
-    cell_masses_jnp, cell_com_jnp = compute_macro_nodes(jax_pos, jax_eff_mass, curr_min, curr_max, curr_res)
-    cell_masses = np.array(cell_masses_jnp)
-    cell_com = np.array(cell_com_jnp)
+    # RECOMBINATION
+    if len(active) < 150:
+        available_slots = np.where((masses + stored_microstates) == 0)[0]
+        for node_pos in dark_matter_nodes[:4]:
+            if len(available_slots) >= 2 and dark_matter_pool >= 30.0:
+                s_pair = available_slots[:2]
+                masses[s_pair], dark_matter_pool = 15.0, dark_matter_pool - 30.0
+                pos[s_pair] = node_pos + np.random.uniform(-10, 10, size=(2, 3))
+                available_slots = available_slots[2:]
+                for s in s_pair:
+                    if int(s) not in active: active.append(int(s))
 
-    alpha_sum = 0.0 # Tracking time dilation
+    # KINEMATICS & QUANTUM GRAVITY
+    eff_mass_snapshot = masses + stored_microstates
+    cell_masses, cell_com = compute_macro_nodes(jnp.array(pos), jnp.array(eff_mass_snapshot), curr_min, curr_max, curr_res)
+    cell_masses, cell_com = np.array(cell_masses), np.array(cell_com)
+    alpha_sum = 0.0 
+    
+    white_hole_flags = np.zeros(MAX_BODIES, dtype=bool)
 
     for i in active:
-        m_eff_i = eff_mass_array[i]
-        force = np.zeros(3)
+        m_eff_i = masses[i] + stored_microstates[i]
+        if m_eff_i <= 0: continue
+        
+        # Internal Density Check (The Planck Star Core)
+        rho_internal = m_eff_i / V_PLANCK_STAR
+        if rho_internal >= RHO_PLANCK:
+            white_hole_flags[i] = True
+
+        force, local_phi = np.zeros(3), 0.0
         v_mag = np.linalg.norm(vel[i])
-        gamma = 1.0 / np.sqrt(1.0 - (min(v_mag, 0.99)**2))
+        gamma_rel = 1.0 / np.sqrt(1.0 - (min(v_mag, 0.99 * C)**2) / (C**2))
         
-        # Calculate local scalar potential for Time Dilation
-        local_phi = 0.0 
+        m_diff = (cell_com - pos[i] - np.round((cell_com - pos[i]) / curr_grid_size) * curr_grid_size)
+        m_dist = np.linalg.norm(m_diff, axis=1)
+
+        matter_mask = (cell_masses > 0) & (m_dist > curr_theta)
+        if np.any(matter_mask):
+            m_m, m_d = cell_masses[matter_mask], m_dist[matter_mask]
+            force += np.sum((m_diff[matter_mask] / m_d[:, None]) * (G * m_eff_i * m_m / (m_d**2))[:, None], axis=0)
+            local_phi -= np.sum((G * m_m) / m_d)
         
-        # FAR-FIELD
-        for c in range(TOTAL_CELLS):
-            if cell_masses[c] <= 0: continue
-            diff = cell_com[c] - pos[i]
-            dist = np.linalg.norm(diff)
-            if dist > curr_theta:
-                force += (diff / dist) * (G * m_eff_i * cell_masses[c] / (dist**2))
-                local_phi -= (G * cell_masses[c]) / dist
-        
-        # NEAR-FIELD
         for j in active:
             if i == j: continue
-            m_eff_j = eff_mass_array[j]
-            diff = pos[j] - pos[i]
+            m_eff_j = masses[j] + stored_microstates[j]
+            if m_eff_j <= 0: continue
+            diff = (pos[j] - pos[i] - np.round((pos[j] - pos[i]) / curr_grid_size) * curr_grid_size)
             dist = np.linalg.norm(diff) + 0.1
             
             if dist <= curr_theta:
-                # BENDING SPACE: Fuzzball String Surface Area Expansion
-                # The radius is a function of its stored microstates (String Tension)
-                r_fuzzball_i = 2.0 * m_eff_i + (STRING_TENSION * np.sqrt(stored_microstates[i]))
-                r_fuzzball_j = 2.0 * m_eff_j + (STRING_TENSION * np.sqrt(stored_microstates[j]))
-                r_s = r_fuzzball_i + r_fuzzball_j
-                
-                if dist < r_s:
-                    stored_microstates[i] += int(m_eff_j)
-                    masses[j], stored_microstates[j], entanglement_map[j] = 0.0, 0, -1
-                    eff_mass_array[j] = 0.0               
-                    eff_mass_array[i] += int(m_eff_j)     
-                    m_eff_i = eff_mass_array[i]           
-                    events.append("!!! [HOLOGRAPHIC SHIFT] Mass converted.")
+                r_s_pair = 2.0 * G * (m_eff_i + m_eff_j) / (C**2)
+                if dist < r_s_pair:
+                    stored_microstates[i] += (masses[j] + stored_microstates[j])
+                    masses[j], stored_microstates[j], excitation_clock[j] = 0.0, 0.0, 0.0
                 else:
-                    local_phi -= (G * m_eff_j) / dist
+                    rho_local = (m_eff_i + m_eff_j) / (dist**3)
+                    lqc_modifier = 1.0 - (rho_local / RHO_PLANCK)
                     
-                    # BENDING SPACE: Relativistic Effective Potential (Curvature)
-                    rel_v = vel[i] - vel[j]
-                    h_vec = np.cross(diff, rel_v)
-                    h2 = np.dot(h_vec, h_vec)
-                    a_gr = (3.0 * G * m_eff_j * h2) / (dist**4)
-                    a_gr = min(a_gr, 1.0) # Cap numeric singularity
+                    if rho_local >= RHO_PLANCK:
+                        white_hole_flags[i] = True
                     
-                    # Gravitational Wave Dissipation
-                    gw_power = (32.0 / 5.0) * (m_eff_i**2 * m_eff_j**2 * (m_eff_i + m_eff_j)) / (dist**5)
-                    gw_loss_factor = min(0.1, gw_power * GW_TIMESTEP) 
-                    vel[i] *= (1.0 - gw_loss_factor)
+                    f_gravity = ((G * m_eff_i * m_eff_j) / (dist**2)) * lqc_modifier
+                    f_lambda = (1.0 / 3.0) * Lambda * (C**2) * dist
                     
-                    # Apply total warped force (Newtonian + Curvature)
-                    force += (diff / dist) * (G * m_eff_i * m_eff_j / (dist**2) + m_eff_i * a_gr)
+                    force += (diff / dist) * (f_gravity - f_lambda)
+                    local_phi -= ((G * m_eff_j) / dist) * lqc_modifier
 
-        # BENDING TIME: Gravitational Time Dilation (Lapse Function alpha)
-        # alpha = sqrt(1 + 2Phi/c^2). Approaching zero freezes time for the particle.
-        alpha = np.sqrt(max(0.01, 1.0 + 2.0 * local_phi))
+        effective_phi = local_phi - (1.0 / 6.0) * Lambda * (C**2) * (curr_grid_size**2)
+        alpha = np.sqrt(max(0.01, min(1.0, 1.0 + (2.0 * effective_phi) / (C**2))))
+        
         alpha_sum += alpha
+        vel[i] = (vel[i] + (force * alpha) / (m_eff_i * gamma_rel))
+        pos[i] = ((pos[i] + (vel[i] * alpha)) * quantum_expansion_ratio - curr_min) % curr_grid_size + curr_min
         
-        # 1. Update Peculiar Velocity (Subject to Time Dilation)
-        vel[i] = (vel[i] + (force * alpha) / (m_eff_i * gamma))
-        v_limit = np.linalg.norm(vel[i])
-        if v_limit > 0.99: vel[i] = (vel[i] / v_limit) * 0.99
+    avg_alpha = alpha_sum / (len(active) or 1)
+    dark_matter_nodes *= quantum_expansion_ratio
+    prev_grid_size = curr_grid_size
         
-        # 2. Update Position (Peculiar Motion is dilated; FTL Metric Expansion is NOT)
-        pos[i] += (vel[i] * alpha) + (H * pos[i])
-        
-    dark_matter_nodes += H * dark_matter_nodes
-
-    # 3. THERMODYNAMICS
-    for i in active:
-        m_eff_i = masses[i] + stored_microstates[i]
-        if m_eff_i >= 20.0:
-            if stored_microstates[i] > 0:
-                capacity = 3.14159 * (2 * m_eff_i)**2
-                while capacity < stored_microstates[i] and stored_microstates[i] > 0:
-                    stored_microstates[i] -= 1
-                    dark_matter_pool += 1
-            elif masses[i] > 0:
-                evap_calculation = HAWKING_COEFF / (m_eff_i**2)
-                temp_rate = int(evap_calculation)
-                if temp_rate < 1: temp_rate = 1 
-                masses[i] -= temp_rate
-                dark_matter_pool += temp_rate 
-                if masses[i] < 15.0:
-                    dark_matter_pool += int(masses[i])
-                    masses[i] = 0
-
-    print(f"\n--- EPOCH {epoch} ---")
-    epoch_events = list(set(events))[:2] if events else ["None"]
-    if events:
-        for e in epoch_events: print(e)
-        
-    avg_lapse = alpha_sum / len(active) if active else 1.0
-    print(f"Bulk: {p_bulk} | Horizon: {s_surf} | Vacuum: {int(dark_matter_pool)}")
-    print(f"Avg Time Dilation (Lapse α): {avg_lapse:.4f} (1.0 = normal, 0.0 = frozen)")
-    print(f"Expansion Rate (H): {H:.5f} | Scale Factor (a): {scale_factor:.2f}")
-    print(f"Integrity: {total_inf}/{int(INITIAL_UNIVERSE_BITS)}")
+    # WHITE HOLE THERMODYNAMICS
+    rad_quanta, next_clk = lqg_thermodynamic_step(jnp.array(masses + stored_microstates), jnp.array(excitation_clock), jnp.array(white_hole_flags))
+    rad_quanta, excitation_clock = np.array(rad_quanta), np.array(next_clk)
     
-    telemetry_data.append([
-        epoch, p_bulk, s_surf, int(dark_matter_pool), total_inf, 
-        f"{H:.5f}", f"{scale_factor:.2f}", f"{avg_lapse:.4f}", 
-        " | ".join(epoch_events)
-    ])
-    time.sleep(0.3)
+    for i in active:
+        if rad_quanta[i] > 0:
+            rad_amount = min(rad_quanta[i], stored_microstates[i] + masses[i])
+            if stored_microstates[i] >= rad_amount: stored_microstates[i] -= rad_amount
+            else: masses[i] -= rad_amount
+            dark_matter_pool += rad_amount
 
-def export_telemetry_to_csv(filename="telemetry_flrw_gr.csv"):
-    with open(filename, mode='w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow([
-            "Epoch", "Bulk_Bits", "Horizon_Bits", "Vacuum_Bits", 
-            "Total_Integrity", "Hubble_H", "Scale_Factor_a", 
-            "Avg_Lapse_Alpha", "Notable_Events"
-        ])
-        writer.writerows(telemetry_data)
-    print(f"\n>>> Unified FLRW+GR Telemetry successfully exported.")
+    if epoch % 50 == 0 or epoch == 1:
+        max_m = np.max(masses + stored_microstates) if len(active) > 0 else 0
+        total_inf = np.sum(masses) + np.sum(stored_microstates) + dark_matter_pool
+        status = "BOUNCE" if np.any(white_hole_flags) else "CLUMP"
+        print(f"EPOCH {epoch:3d} | Vac: {dark_matter_pool:5.1f} | L: {curr_grid_size:6.1f} | α: {avg_alpha:.3f} | Max_F: {max_m:5.1f} | S: {status} | I: {total_inf/INITIAL_UNIVERSE_BITS:.6f}")
 
-export_telemetry_to_csv()
+print("\n>>> v13.0 Engine Operational. The Universe Breathes.")
