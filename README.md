@@ -57,7 +57,7 @@ $$I_{total} = I_{bulk} + I_{horizon} + I_{vacuum}$$
 ## 💻 Local Installation (For JAX/TPU Development)
 If you wish to run the engine locally or on a dedicated computing cluster:
 ```bash
-git clone [https://github.com/YOUR_USERNAME/String-Star-Manifold.git](https://github.com/YOUR_USERNAME/String-Star-Manifold.git)
+git clone [https://github.com/Rupayan52/String-Star-Manifold.git](https://github.com/Rupayan52/String-Star-Manifold.git)
 cd String-Star-Manifold
 pip install jax jaxlib numpy pandas matplotlib
 python engine.py
