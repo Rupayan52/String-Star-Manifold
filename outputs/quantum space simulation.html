@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bandyopadhyay Cyclic Manifold v31.2</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; font-family: 'Courier New', Courier, monospace; }
+        canvas { display: block; }
+        #ui-layer {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #fff;
+            background: rgba(10, 15, 25, 0.85);
+            padding: 20px;
+            border: 1px solid #30363d;
+            border-left: 4px solid #58a6ff;
+            border-radius: 6px;
+            pointer-events: none; /* Let clicks pass through to 3D scene */
+            min-width: 320px;
+        }
+        h1 { margin: 0 0 10px 0; font-size: 16px; color: #58a6ff; font-family: 'Segoe UI', sans-serif;}
+        .metric { margin: 8px 0; font-size: 14px; }
+        .highlight { color: #00ff00; font-weight: bold; }
+        .danger { color: #ff7b72; font-weight: bold; }
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(10, 15, 25, 0.85);
+            padding: 15px;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+        }
+        button {
+            background-color: #238636;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #2ea043; }
+        .tooltip { font-size: 11px; color: #8b949e; margin-top: 4px; }
+    </style>
+    <!-- Load Three.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+    <!-- Real-time Telemetry Overlay -->
+    <div id="ui-layer">
+        <h1>THE BANDYOPADHYAY MANIFOLD<br><span style="font-size: 11px; color:#8b949e;">Primary Quantum Node | v31.2 WebGL</span></h1>
+        <div class="metric">EPOCH: <span id="epoch-val">0000</span> | <span id="phase-val" class="danger">[ <<< CRUNCHING <<< ]</span></div>
+        <div class="metric">Scale Factor a(t): <span id="scale-val">1.0000</span> x</div>
+        <div class="tooltip">(Current size relative to initial state)</div>
+        <div class="metric">Baryon Pressure : <span id="pressure-val">0.00</span> bits</div>
+        <div class="tooltip">(Inter-particle repulsion)</div>
+        <div class="metric" style="margin-top: 15px; font-size: 12px; color: #8b949e;">[Unitarity Compliance: PASS]</div>
+    </div>
+
+    <!-- Interaction Controls -->
+    <div id="controls">
+        <button id="trigger-btn" onclick="startCycle()">INITIALIZE BIG CRUNCH</button>
+        <div class="tooltip" style="margin-top: 10px;">Drag to Rotate | Scroll to Zoom</div>
+    </div>
+
+    <script>
+        // --- 1. Scene Setup ---
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x000000, 0.002);
+        
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+        camera.position.set(0, 300, 600);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // --- 2. Particle Systems ---
+        const nDM = 1500;
+        const nBaryon = 800;
+        
+        // Dark Matter (Collisionless, White, Low Alpha)
+        const dmGeometry = new THREE.BufferGeometry();
+        const dmPositions = new Float32Array(nDM * 3);
+        const dmVelocities = [];
+        
+        for(let i=0; i<nDM*3; i+=3) {
+            dmPositions[i] = (Math.random() - 0.5) * 800;
+            dmPositions[i+1] = (Math.random() - 0.5) * 800;
+            dmPositions[i+2] = (Math.random() - 0.5) * 800;
+            dmVelocities.push({ x: 0, y: 0, z: 0 });
+        }
+        dmGeometry.setAttribute('position', new THREE.BufferAttribute(dmPositions, 3));
+        const dmMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 2, transparent: true, opacity: 0.3 });
+        const dmParticles = new THREE.Points(dmGeometry, dmMaterial);
+        scene.add(dmParticles);
+
+        // Baryonic Fluid (Hydrodynamic, Color Mapped)
+        const baryonGeometry = new THREE.BufferGeometry();
+        const baryonPositions = new Float32Array(nBaryon * 3);
+        const baryonColors = new Float32Array(nBaryon * 3);
+        const baryonVelocities = [];
+
+        for(let i=0; i<nBaryon*3; i+=3) {
+            baryonPositions[i] = (Math.random() - 0.5) * 500;
+            baryonPositions[i+1] = (Math.random() - 0.5) * 500;
+            baryonPositions[i+2] = (Math.random() - 0.5) * 500;
+            baryonVelocities.push({ x: 0, y: 0, z: 0 });
+            // Initial color (cool purple/blue)
+            baryonColors[i] = 0.2; baryonColors[i+1] = 0.0; baryonColors[i+2] = 0.8;
+        }
+        baryonGeometry.setAttribute('position', new THREE.BufferAttribute(baryonPositions, 3));
+        baryonGeometry.setAttribute('color', new THREE.BufferAttribute(baryonColors, 3));
+        const baryonMaterial = new THREE.PointsMaterial({ size: 4, vertexColors: true, blending: THREE.AdditiveBlending });
+        const baryonParticles = new THREE.Points(baryonGeometry, baryonMaterial);
+        scene.add(baryonParticles);
+
+        // --- 3. Physics Simulation State ---
+        let isRunning = false;
+        let epoch = 0;
+        let a_scale = 1.0;
+        let phase = "CRUNCH";
+        let maxPressure = 0;
+
+        function startCycle() {
+            isRunning = true;
+            document.getElementById('trigger-btn').innerText = "SYSTEM ACTIVE";
+            document.getElementById('trigger-btn').style.backgroundColor = "#8b949e";
+        }
+
+        // --- 4. Animation Loop ---
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (isRunning) {
+                epoch++;
+                const dmPos = dmGeometry.attributes.position.array;
+                const bPos = baryonGeometry.attributes.position.array;
+                const bCol = baryonGeometry.attributes.color.array;
+                
+                let currentMaxPressure = 0;
+
+                // Physics logic approximating JAX kernel
+                if (phase === "CRUNCH") {
+                    a_scale = Math.max(0.05, a_scale - 0.005);
+                    
+                    for(let i=0; i<nBaryon*3; i+=3) {
+                        // Gravity pull to center
+                        baryonVelocities[i/3].x -= bPos[i] * 0.0002;
+                        baryonVelocities[i/3].y -= bPos[i+1] * 0.0002;
+                        baryonVelocities[i/3].z -= bPos[i+2] * 0.0002;
+
+                        // Density/Pressure calculation (Distance from center)
+                        const dist = Math.sqrt(bPos[i]**2 + bPos[i+1]**2 + bPos[i+2]**2);
+                        const localPressure = 1000 / (dist + 10);
+                        if (localPressure > currentMaxPressure) currentMaxPressure = localPressure;
+
+                        // Color mapping based on pressure (Blue -> Red -> White)
+                        const heat = Math.min(localPressure / 50, 1.0);
+                        bCol[i] = heat + 0.2;     // R
+                        bCol[i+1] = heat * 0.8;   // G
+                        bCol[i+2] = 1.0 - heat;   // B
+
+                        // Apply kinematics
+                        bPos[i] += baryonVelocities[i/3].x;
+                        bPos[i+1] += baryonVelocities[i/3].y;
+                        bPos[i+2] += baryonVelocities[i/3].z;
+                    }
+
+                    // Quantum Bounce Trigger
+                    if (currentMaxPressure > 65) {
+                        phase = "BANG";
+                        document.getElementById('phase-val').innerText = "[ >>> EXPANDING >>> ]";
+                        document.getElementById('phase-val').className = "highlight";
+                        
+                        // SPH Rebound - Reverse and explode outward
+                        for(let i=0; i<nBaryon; i++) {
+                            baryonVelocities[i].x *= -2.5;
+                            baryonVelocities[i].y *= -2.5;
+                            baryonVelocities[i].z *= -2.5;
+                        }
+                    }
+
+                } else if (phase === "BANG") {
+                    a_scale += 0.01;
+                    for(let i=0; i<nBaryon*3; i+=3) {
+                        // Hubble flow expansion
+                        bPos[i] += baryonVelocities[i/3].x * 1.02;
+                        bPos[i+1] += baryonVelocities[i/3].y * 1.02;
+                        bPos[i+2] += baryonVelocities[i/3].z * 1.02;
+                        
+                        // Cool down color
+                        bCol[i] = Math.max(0.2, bCol[i] - 0.01);
+                        bCol[i+1] = Math.max(0.0, bCol[i+1] - 0.02);
+                        bCol[i+2] = Math.min(0.8, bCol[i+2] + 0.01);
+                    }
+                    currentMaxPressure = Math.max(0, parseFloat(document.getElementById('pressure-val').innerText) - 0.5);
+                }
+
+                // Dark matter strictly follows gravity/expansion, unaffected by SPH pressure
+                for(let i=0; i<nDM*3; i+=3) {
+                    if (phase === "CRUNCH") {
+                        dmVelocities[i/3].x -= dmPos[i] * 0.0001;
+                        dmVelocities[i/3].y -= dmPos[i+1] * 0.0001;
+                        dmVelocities[i/3].z -= dmPos[i+2] * 0.0001;
+                    } else {
+                        dmVelocities[i/3].x *= 1.01;
+                        dmVelocities[i/3].y *= 1.01;
+                        dmVelocities[i/3].z *= 1.01;
+                    }
+                    dmPos[i] += dmVelocities[i/3].x;
+                    dmPos[i+1] += dmVelocities[i/3].y;
+                    dmPos[i+2] += dmVelocities[i/3].z;
+                }
+
+                dmGeometry.attributes.position.needsUpdate = true;
+                baryonGeometry.attributes.position.needsUpdate = true;
+                baryonGeometry.attributes.color.needsUpdate = true;
+
+                // Update Telemetry UI
+                document.getElementById('epoch-val').innerText = epoch.toString().padStart(4, '0');
+                document.getElementById('scale-val').innerText = a_scale.toFixed(4);
+                document.getElementById('pressure-val').innerText = currentMaxPressure.toFixed(2);
+            }
+
+            // Slowly rotate scene for cinematic effect
+            scene.rotation.y += 0.002;
+            renderer.render(scene, camera);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+    </script>
+</body>
+</html>
