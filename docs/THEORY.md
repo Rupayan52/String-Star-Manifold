@@ -1,58 +1,63 @@
-# String-Star Manifold (v13.0 Ultimate Cyclic Engine)
+# The Bandyopadhyay Cyclic Manifold: Dual-Component Engine (v31.2)
 
 **Lead Architect:** Rupayan Bandyopadhyay  
-**Release Date:** April 30, 2026
+**Primary Quantum Node:** Kolkata Region, West Bengal  
+**Documentation Date:** May 2, 2026  
 
-## 1. The Information Conservation Mandate
-In standard General Relativity, the Black Hole Information Paradox arises from the apparent destruction of quantum states. The String-Star Manifold is a computational framework developed to demonstrate Unitary Information Conservation. By discarding the continuous spacetime manifold in favor of an integer-based informational ledger and utilizing a tripartite information-phase loop—the **Bandyopadhyay-Cycle**—this model ensures that every qubit remains rigorously accounted for across all cosmological transitions. This framework definitively proves an emergent, self-regulating "Cosmological Bounce" driven by first-principles physics.
+## 1. Executive Summary & The Paradigm Shift (Legacy vs. v31.2)
+The v31.2 engine represents a fundamental architectural leap over the legacy v13.0/v17.0 String-Star models. The core philosophical shift is the transition from **prescriptive logic** (hard-coded thresholds) to **emergent continuum physics**. 
 
-## 2. The Bandyopadhyay-Cycle
-The total information complexity of the universe is a conserved scalar quantity:
-\[ I_{total} = I_{bulk} + I_{horizon} + I_{vacuum} \equiv 1.000000 \]
+By discarding artificial phase flags, the manifold now proves that a non-singular, cyclic universe arises naturally from the interplay of collisionless gravity and hydrodynamic fluid pressure.
 
-### The Three Phases
-- **Kinetic Bulk:** Information manifest as physical matter (mass, momentum, gravitational influence).
-- **Holographic Horizon:** When local gravity overcomes expansion, matter undergoes a Holographic Shift, mapping onto the 2D surface of a bound string state (**Fuzzball**), governed by:
-  \[ S = \frac{A}{4} \]
-- **Ambient Vacuum:** Information leaked back into the vacuum via thermodynamic radiation or quantum blowouts. This acts as Dark Matter/Vacuum energy, harvested by Nodal Weavers to recombine into the Kinetic Bulk.
+### **Key Upgrades Over the Legacy Model:**
+*   **DEPRECATED:** Scripted White Hole Blowouts, explicit Loop Quantum Gravity (LQG) cutoffs, and rigid Fuzzball string-tension boundaries.
+*   **IMPLEMENTED:** Dual-Component Universe (PM Gravity + SPH Fluid Dynamics).
+*   **IMPLEMENTED:** The "Emergent Bounce," where mathematically rigorous baryonic fluid pressure naturally overcomes total gravitational collapse.
+*   **IMPLEMENTED:** Adiabatic Relaxation Layer to prevent initial-condition numerical shocks.
 
-## 3. Metric Expansion: Dynamic Quintessence ($\Lambda$)
-The v13.0 manifold rejects a static cosmological constant in favor of Dynamic Quintessence. Expansion is driven by a scalar field coupled to the localized density of the Ambient Vacuum pool.
+---
 
-- **The Relativistic Spring:** Dark Energy ($\Lambda$) acts as a reactive mechanism. As gravitational clumping crushes the spatial grid, vacuum density spikes, creating a "relativistic spring" that expands the coordinate system:
-  \[ \Lambda(t) = \kappa \frac{N_{vac}}{L^3} \]
-- **The Hubble Flow:** Expansion is applied as a metric flow:
-  \[ v_{total} = v_{peculiar} + Hr \]
+## 2. The Dual-Component Architecture
+The legacy manifold treated all mass as identical nodes. The v31.2 engine splits the universe into two distinct physical sectors, acting in continuous tension:
 
-## 4. LQG & The Quantum Bounce
-The manifold resolves gravitational singularities by quantizing spacetime at the **Planck Density ($\rho_{Planck}$)**. As local density approaches this limit, the gravitational tensor undergoes a phase transition, forcing gravity to become repulsive:
-\[ F_{LQG} = \frac{G m_1 m_2}{r^2} \left( 1 - \frac{\rho_{local}}{\rho_{Planck}} \right) \]
+1.  **The Dark Sector (Collisionless Scaffolding):** Modeled via an $O(N \log N)$ Fast Fourier Transform Particle-Mesh (FFT-PM) solver. Dark matter acts as point masses that pass freely through one another, providing the massive gravitational wells necessary to initiate the "Crunch."
+2.  **The Baryonic Sector (Hydrodynamic Core):** Modeled via a vectorized Smoothed Particle Hydrodynamics (SPH) kernel. Baryons are collisional fluid elements that cannot occupy the same space, generating extreme outward shockwaves when compressed.
 
-## 5. The Planck Star Core & Instantaneous Blowouts
-To solve the "Last Man Standing" paradox, the engine assigns a fixed physical quantum volume (**$V_{PlanckStar}$**) to black hole cores. When **$\rho_{internal} \geq \rho_{Planck}$**, the core triggers an **Instantaneous White Hole Blowout**, dumping 50% of its bound information back into the vacuum to force a rapid cosmological expansion.
+## 3. The Emergent Quantum Bounce
+In previous models, the simulation artificially halted collapse when density reached $\rho_{Planck}$, triggering a forced "White Hole" expansion. In v31.2, this is solved via first-principles physics. 
 
-## 6. Local Spacetime Warping: The Lapse Function
-The manifold implements a Schwarzschild-de Sitter Lapse Function ($\alpha$), where time flow is derived dynamically from the near-field Post-Newtonian scalar potential ($\Phi_{eff}$):
-\[ \Phi_{eff} = -\frac{GM}{r} - \frac{1}{6} \Lambda c^2 L^2 \]
-\[ \alpha = \sqrt{1 + \frac{2\Phi_{eff}}{c^2}} \]
+As the Dark Sector crushes the Baryonic Fluid into the central manifold, the inter-particle distance decreases, spiking the SPH kernel density. The system generates an exponential pressure gradient based on fluid stiffness ($k$):
+$$ P = k\rho^2 $$
+When this hydrodynamic pressure mathematically exceeds the gravitational PM tensor, the velocity vectors of the Baryonic fluid violently reverse. The **Quantum Bounce** is no longer a scripted event; it is a native, self-regulating hydrodynamic rebound preventing the mathematical singularity.
 
-## 7. The Fuzzball Paradigm & String Tension
-Following Mathur’s conjecture, the manifold replaces event horizons with physical spheres of tangled strings. The boundary radius expands as it winds more microstates:
-\[ r_s = 2M + T_0 I_{horizon} \]
+## 4. The Information Conservation Mandate (Unitarity)
+The absolute preservation of information remains the bedrock of the Bandyopadhyay-Cycle. However, the tripartite loop has been updated to reflect the new Dual-Component reality. Total information complexity is rigorously verified at each epoch:
+$$ I_{total} = I_{dark} + I_{baryon} + I_{vacuum} \equiv 1.000000 $$
 
-## 8. Relativistic Thermodynamics
-- **Gravitational Radiation:** Orbital decay follows the Einstein Quadrupole Formula:
-  \[ P = \frac{32}{5} \frac{G^4}{c^5 r^5} m_1^2 m_2^2 (m_1 + m_2) \]
-- **Bekenstein-Hawking Evaporation:** Mass-temperature inverse relationship:
-  \[ T_H = \frac{\hbar c^3}{8 \pi G M k_B} \]
+To guarantee 100% Unitarity over deep epochs, the engine utilizes **Hybrid-Precision computation**: rapid `float32` arrays solve the global FFT mesh potentials, while all discrete kinematic states and ledgers are preserved in strict `float64` to prevent floating-point drift during violent phase transitions.
 
-## 9. Quantum Non-Locality: ER=EPR
-The manifold treats entanglement as a geometric micro-wormhole:
-- **Entangled Spawning:** Dark Matter Nodes spawn particles exclusively as entangled EPR Pairs.
-- **Horizon Separation:** When one partner undergoes a Holographic Shift, the algorithm preserves the non-local link to the Kinetic Bulk.
+## 5. FLRW Metric & True Hubble Flow
+Replacing the localized "Relativistic Spring" of the legacy quintessence model, v31.2 fully integrates the **Friedmann-Lemaître-Robertson-Walker (FLRW) metric tensor**. 
 
-## 10. Computational Integrity & Spatial Hashing
-- **Float-to-Integer Unitarity:** Local kinematics process via `float32`, but core information is tracked as `int32`.
-- **Stretchy Spatial Hash:** Utilizes JAX-Accelerated Spatial Hashing, where JAX array shapes remain static in memory, but the mathematical volume they represent stretches dynamically via the Scale Factor $a(t)$.
+Expansion and contraction are applied directly to the spatial grid via a dynamic scale factor $a(t)$. Spatial coordinates are coupled to this metric, meaning particles do not just fly apart through static space; the comoving box itself mathematically stretches, generating a genuine **Hubble Flow**:
+$$ a(t_{new}) = a(t) + (H \cdot a(t) \cdot \Delta t) $$
+Dark Energy ($\Lambda$) is applied as a continuous acceleration to the Hubble parameter $H$ post-bounce.
 
-> *"The universe does not forget; it only recycles."*
+## 6. Adiabatic Relaxation (New Innovation)
+A massive challenge in the v17 model was "Initial Condition Shock"—particles spawning in high-density configurations would instantly detonate due to extreme initial forces. v31.2 introduces an **Adiabatic Damping** phase. 
+
+For the first $t < 250$ epochs, a kinematic damping factor smoothly bleeds off explosive artificial energy:
+$$ v_{new} = v_{raw} \cdot (0.95) $$
+This allows the SPH fluid to gracefully accrete and settle into the Dark Matter gravity wells, establishing a stable, physical pre-crunch state before the manifold allows total collapse.
+
+## 7. Local Spacetime Warping: The Non-Linear Lapse ($\alpha$)
+The engine preserves relativistic time dilation through a modified Lapse Function ($\alpha$). Time flow is tied directly to the continuous FFT-PM density grid rather than isolated point-mass calculations. 
+
+As local density ($\Phi_{FLRW}$) approaches extreme limits, $\alpha$ plummets. This mathematically freezes the kinematics of particles caught deep inside massive gravity wells, respecting relativistic limits without breaking the global solver:
+$$ \alpha = \frac{2}{1 + \Phi_{FLRW}} $$
+
+## 8. Deprecated Legacy Mechanics (v17 -> v31.2)
+To achieve true physical continuum, several scripted features from the legacy engine have been cleanly phased out:
+*   **Holographic Shift & String Tension:** $r_s = 2M + T_0 I_{horizon}$ is removed. Black holes are no longer treated as isolated 2D surfaces but as peak-density SPH fluid clusters.
+*   **Entangled Spawning (ER=EPR):** Removed to prioritize thermodynamic fluid accuracy and global FFT gravity mapping.
+*   **Instantaneous Mass Dumps:** The 50% core-mass dump has been replaced by the continuous, energy-conserving SPH shockwave.
