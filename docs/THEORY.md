@@ -1,7 +1,6 @@
 # The Bandyopadhyay Cyclic Manifold: Dual-Component Engine (v31.2)
 
-**Lead Architect:** Rupayan Bandyopadhyay  
-**Primary Quantum Node:** Kolkata Region, West Bengal  
+**Lead Architect:** Rupayan Bandyopadhyay   
 **Documentation Date:** May 2, 2026  
 
 ## 1. Executive Summary & The Paradigm Shift (Legacy vs. v31.2)
