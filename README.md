@@ -1,6 +1,6 @@
 [![DOI](https://zenodo.org/badge/1222455299.svg)](https://doi.org/10.5281/zenodo.19822536)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1zB3BhM96oTJAz2oAeIhe4tZVzuW_2_e6?usp=sharing)
 # The Bandyopadhyay Cyclic Manifold: Fractal Multiverse Engine (v33.0)
 **Lead Architect:** Rupayan Bandyopadhyay  
 **Release:** v33.0 (The Immutable Entropy Update)  
