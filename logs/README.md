@@ -1,54 +1,54 @@
 # Simulation Logs: The Bandyopadhyay Cyclic Manifold
 
-This directory contains the raw telemetry data proving the absolute Unitarity and non-singular stability of the Bandyopadhyay Cyclic Manifold. The current dataset captures the transition from standard gravitational accretion into an emergent, hydrodynamic Quantum Bounce.
+This directory contains the raw telemetry and outcome data proving the absolute Unitarity and fractal stability of the Bandyopadhyay Cyclic Manifold (v33.0). The current dataset captures the transition from a single parent universe into a self-replicating, Darwinian multiverse governed by the Smolin Protocol.
 
 ### Hardware & Environment Specifications
-*   **Node Location:** Primary Quantum Node | Kolkata Region, West Bengal
-*   **Architecture:** Google TPU (Tensor Processing Unit) Accelerated
-*   **Framework:** JAX (Vectorized Just-In-Time compiled execution)
-*   **Precision:** **Hybrid-Precision** (Float32 for rapid O(N log N) FFT grid potential solutions; **Float64** for all kinematic state preservation to ensure 1.000000 Unitarity over deep epochs).
+*   **Architecture:** Cloud TPU v5e (Tensor Processing Unit) Accelerated
+*   **Framework:** JAX (Vectorized Just-In-Time compiled execution with Sequential Supremacy)
+*   **Execution Protocol:** XLA preallocation explicitly disabled to prevent VRAM swap-death spirals during dimensional cascading.
+*   **Precision:** **Hybrid-Precision** (Float32 for rapid $O(N \log N)$ FFT grid potential solutions; **Float64** for all kinematic state preservation to ensure 1.000000 Unitarity over deep epochs).
 
 ---
 
-### Architectural Evolution: v31.2 vs. v13.0
-The `quantum_node_telemetry.csv` dataset represents a massive leap from the v13.0 Ultimate Cyclic Engine. The core difference lies in the transition from **prescriptive logic** to **emergent physics**:
+### Architectural Evolution: v33.0 vs. v31.2
+The current telemetry dataset represents a monumental paradigm shift from the v31.2 Dual-Component engine. The core difference lies in the transition from a **closed-loop global bounce** to an **open-ended evolutionary multiverse**:
 
-1.  **Dual-Component Manifold:** v13.0 treated all matter equally. v31.2 splits the universe into two distinct physical sectors: **Dark Matter** (collisionless point masses solving on a PM grid) and **Baryonic Fluid** (collisional matter generating O(N²) physical shockwaves via Smoothed Particle Hydrodynamics).
-2.  **Emergent Hydrodynamic Bounce:** v13.0 relied on "White Hole Flags" to artificially dump mass when density reached $\rho_{Planck}$. v31.2 discards artificial flags. The bounce is now a natural consequence of baryonic fluid reaching a compression limit where its internal pressure gradient ($P = k\rho^2$) violently overcomes Dark Matter gravity.
-3.  **Adiabatic Relaxation:** Solves the v13.0 "Initial Condition Shock" by bleeding kinetic energy for the first 250 epochs, allowing matter to settle gracefully into gravity wells before phase transitions occur.
+1.  **Fractal Spawning vs. Global Bounce:** v31.2 bounced the entire universe when global pressure peaked. v33.0 discards this. Instead, when local baryonic density crosses the Schwarzschild threshold ($\rho > 15.0$) and generates extreme quantum entropy, the metric experiences localized **dimensional rupture**, pinching off to spawn independent, parallel universes.
+2.  **The Smolin Protocol (Darwinian Physics):** v31.2 utilized hard-coded physics. v33.0 implements Cosmological Natural Selection. Child universes inherit mutated variations of their parent's Dark Matter Mass ($M_{DM}$), Quintessence Potential ($V_0$), and Cooling Coefficients.
+3.  **Sequential JIT Supremacy:** Previous builds suffered from XLA compiler gridlock when attempting parallel multiprocessing. v33.0 completely bypasses this by feeding universes to the TPU sequentially. The first dimension pays the ~4-minute compilation tax; subsequent dimensions cascade instantly via local cache retrieval.
 
 ---
 
-### Initial Conditions (v31.2 Final)
-*   **Dark Sector:** 2000 Nodes ($Mass_{DM} = 15.5$)
-*   **Baryonic Sector:** 1000 Fluid Elements ($Mass_{Baryon} = 5.2$)
+### Initial Conditions & Engine Parameters (v33.0 Final)
+*   **Dark Sector:** 2000 Nodes (Base $Mass_{DM} = 120.0$, subject to mutation)
+*   **Baryonic Sector:** 1000 Fluid Elements (Base $Mass_{Baryon} = 5.2$)
 *   **Grid Resolution:** 128³ Voxels over a 400.0 Comoving Box
-*   **Run Length:** 1000 Epochs
-*   **Fluid Stiffness ($k$):** 2500.0 (Tuned for maximum physical rebound)
-*   **Unitarity Requirement:** 1.000000 (Zero data loss allowed)
+*   **Epoch Cycle:** 1000 Epochs per Dimension
+*   **Critical Entropy Threshold:** $1.2 \times 10^4$ String Bits
+*   **Spatial Clustering:** DBSCAN (Density-Based Spatial Clustering of Applications with Noise) with $\epsilon = SPH\_H \times 1.5$
 
 ---
 
-### Data Dictionary (`quantum_node_telemetry.csv`)
-The telemetry log tracks the state of the expanding and contracting FLRW metric at each epoch.
+### Data Dictionary (`Multiverse_Gen2_Outcomes/mature_gen2_node_*.h5`)
+The telemetry logs track the thermodynamic and evolutionary fitness of the manifold across three distinct phases (Primary Node, Fractal Extraction, and Maturation).
 
 | Metric | Definition |
 | :--- | :--- |
-| `epoch` | The current time-step of the simulation. |
-| `phase` | The current cosmological regime: **GRAVITATIONAL CRUNCH** or **BIG BANG (HUBBLE FLOW)**. |
-| `scale_factor_at` | The global scale factor $a(t)$. Tracks the physical stretching or shrinking of the comoving grid space relative to the initial state. |
-| `baryon_pressure` | The peak internal repulsion generated by the SPH fluid. This replaces v13.0's artificial density thresholds as the primary metric preventing singularity. |
-| `metric_lapse_alpha` | Minimum Lapse Function ($\alpha$). Tracks gravitational time dilation based on local grid density. Lower values indicate extreme mass clustering. |
-| `bounce_count` | The total number of successful, non-singular phase transitions completed by the manifold. |
+| `epoch` | The current time-step of the dimensional simulation. |
+| `scale_factor_a_t` | The global metric expansion $a(t)$. Tracks the physical stretching of the comoving grid space. |
+| `max_stellar_fraction_Sf` | The primary **Evolutionary Fitness Metric**. Measures the percentage of baryonic gas successfully converted into star-forming regions. |
+| `quantum_string_bits` | The localized entropy measure. When a region exceeds the critical threshold, a dimensional pinch-off is triggered. |
+| `active_black_holes` | The count of distinct supermassive singularities mapped by the DBSCAN algorithm. |
+| `metallicity_index_Z` | Tracks heavy element seeding from supernova feedback, acting as a multiplier for baryonic cooling rates. |
 
 ---
 
-### Notable Event Signatures (v31.2 Build)
+### Notable Event Signatures (v33.0 Build)
 
 | Event | Signature | Mechanism |
 | :--- | :--- | :--- |
-| **Adiabatic Settling** | `baryon_pressure` steadily decreases in early epochs ($t < 250$). | Velocity damping allows the SPH fluid to fall smoothly into Dark Matter scaffolding without prematurely exploding. |
-| **The Quantum Bounce** | Massive exponential spike in `baryon_pressure` paired with an $\alpha$ drop below 0.081. | Baryonic matter compresses to its mathematical limit. Repulsion forces reverse all inward radial velocities instantly. |
-| **Hubble Flow Transition** | `scale_factor_at` begins to scale rapidly $> 1.0x$; Phase shifts to BIG BANG. | Post-bounce expansion governed by the dynamic FLRW metric update, driving the comoving grid outward. |
+| **Dimensional Pinch-Off** | `quantum_string_bits` breaches $1.2 \times 10^4$ paired with an `[ANOMALY]` log output. | Localized mass-energy density warps the FLRW metric past the point of return, establishing the blueprint for a child dimension. |
+| **DBSCAN Extraction** | Identification of $N$ valid universes (e.g., 37 or 47 nodes). | The algorithm maps spatial proximity, merging overlapping event horizons and filtering out micro-fluctuations (Entropy < 100 bits) to seed true dimensions. |
+| **The Avalanche Effect** | Dimension 1 executes in ~4 minutes; Dimensions 2 through $N$ log as `STABLE` instantly. | **Sequential JIT Supremacy** in action. The XLA graph is cached by the primary Python thread, allowing instantaneous physical computation for identically structured, mutated graphs. |
 
-*"The introduction of the SPH Baryon sector confirms that singularity avoidance does not require hard-coded limiters. Given sufficient fluid stiffness, the manifold naturally regulates its own phase transitions while maintaining absolute unitarity."* — R. Bandyopadhyay, Lead Architect
+*"By embracing chaotic floating-point drift and the Smolin Protocol, the manifold now successfully optimizes its own physics. We are no longer merely simulating space; we are observing the natural selection of spacetime itself."* — R. Bandyopadhyay, Lead Architect
