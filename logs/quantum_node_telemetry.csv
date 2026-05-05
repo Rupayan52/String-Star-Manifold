@@ -1,12 +1,175 @@
-epoch,phase,scale_factor_at,baryon_pressure,metric_lapse_alpha,bounce_count
-1,GRAVITATIONAL CRUNCH,1.0,28.2148,0.00660403,1
-100,GRAVITATIONAL CRUNCH,1.020815,19.8603,0.01735159,100
-200,GRAVITATIONAL CRUNCH,1.086336,22.6965,0.00682287,200
-300,GRAVITATIONAL CRUNCH,1.205158,15.2139,0.01843745,300
-400,GRAVITATIONAL CRUNCH,1.39373,15.3144,0.08699121,391
-500,GRAVITATIONAL CRUNCH,1.680199,14.4782,0.12944747,392
-600,GRAVITATIONAL CRUNCH,2.11146,13.2267,0.13631099,392
-700,BIG BANG (HUBBLE FLOW),2.765907,12.5566,0.20013933,392
-800,BIG BANG (HUBBLE FLOW),3.776742,10.1668,0.28538549,392
-900,BIG BANG (HUBBLE FLOW),5.375447,9.4233,0.30435314,392
-1000,BIG BANG (HUBBLE FLOW),7.974838,9.0047,0.43132549,392
+================================================================================
+        THE BANDYOPADHYAY CYCLIC MANIFOLD | VERSION 33.0 (SEQUENTIAL FRACTAL MANIFOLD) 
+            Primary Quantum Node (Parent Universe)
+================================================================================
+EPOCH 0001 [GEN 1]
+  ├─ Scale Factor a(t)  : 1.0000 x   |██░░░░░░░░░░░░░░░░░░░░░░|
+  ├─ Max Baryon Density :   28.21
+  ├─ Max Thermal Energy :  152.11 (Internal u)
+  ├─ Max Stellar Frac.  : 0.02% (S_f)
+  ├─ Max Metallicity    : 0.01% (Z)
+  ├─ Active Black Holes : 0
+  └─ Quantum String Bits: 0.00e+00 / 1.20e+04
+
+EPOCH 0100 [GEN 1]
+  ├─ Scale Factor a(t)  : 1.0004 x   |██░░░░░░░░░░░░░░░░░░░░░░|
+  ├─ Max Baryon Density :    9.59
+  ├─ Max Thermal Energy : 60598.19 (Internal u)
+  ├─ Max Stellar Frac.  : 0.03% (S_f)
+  ├─ Max Metallicity    : 0.01% (Z)
+  ├─ Active Black Holes : 0
+  └─ Quantum String Bits: 0.00e+00 / 1.20e+04
+
+EPOCH 0200 [GEN 1]
+  ├─ Scale Factor a(t)  : 1.0016 x   |██░░░░░░░░░░░░░░░░░░░░░░|
+  ├─ Max Baryon Density :   28.43
+  ├─ Max Thermal Energy : 39392.31 (Internal u)
+  ├─ Max Stellar Frac.  : 0.16% (S_f)
+  ├─ Max Metallicity    : 0.08% (Z)
+  ├─ Active Black Holes : 632
+  └─ Quantum String Bits: 2.91e+04 / 1.20e+04
+  [ANOMALY: DIMENSIONAL PINCH-OFF DETECTED! NEW BUBBLE UNIVERSE SPAWNED]
+
+EPOCH 0300 [GEN 1]
+  ├─ Scale Factor a(t)  : 1.0037 x   |██░░░░░░░░░░░░░░░░░░░░░░|
+  ├─ Max Baryon Density :   10.78
+  ├─ Max Thermal Energy : 12465.97 (Internal u)
+  ├─ Max Stellar Frac.  : 0.17% (S_f)
+  ├─ Max Metallicity    : 0.09% (Z)
+  ├─ Active Black Holes : 835
+  └─ Quantum String Bits: 3.98e+04 / 1.20e+04
+  [ANOMALY: DIMENSIONAL PINCH-OFF DETECTED! NEW BUBBLE UNIVERSE SPAWNED]
+
+EPOCH 0400 [GEN 1]
+  ├─ Scale Factor a(t)  : 1.0066 x   |██░░░░░░░░░░░░░░░░░░░░░░|
+  ├─ Max Baryon Density :    8.98
+  ├─ Max Thermal Energy : 12465.97 (Internal u)
+  ├─ Max Stellar Frac.  : 0.17% (S_f)
+  ├─ Max Metallicity    : 0.09% (Z)
+  ├─ Active Black Holes : 835
+  └─ Quantum String Bits: 3.98e+04 / 1.20e+04
+  [ANOMALY: DIMENSIONAL PINCH-OFF DETECTED! NEW BUBBLE UNIVERSE SPAWNED]
+
+EPOCH 0500 [GEN 1]
+  ├─ Scale Factor a(t)  : 1.0104 x   |██░░░░░░░░░░░░░░░░░░░░░░|
+  ├─ Max Baryon Density :    8.68
+  ├─ Max Thermal Energy : 12465.97 (Internal u)
+  ├─ Max Stellar Frac.  : 0.17% (S_f)
+  ├─ Max Metallicity    : 0.09% (Z)
+  ├─ Active Black Holes : 835
+  └─ Quantum String Bits: 3.98e+04 / 1.20e+04
+  [ANOMALY: DIMENSIONAL PINCH-OFF DETECTED! NEW BUBBLE UNIVERSE SPAWNED]
+
+EPOCH 0600 [GEN 1]
+  ├─ Scale Factor a(t)  : 1.0150 x   |██░░░░░░░░░░░░░░░░░░░░░░|
+  ├─ Max Baryon Density :    7.96
+  ├─ Max Thermal Energy : 57404.07 (Internal u)
+  ├─ Max Stellar Frac.  : 0.17% (S_f)
+  ├─ Max Metallicity    : 0.09% (Z)
+  ├─ Active Black Holes : 835
+  └─ Quantum String Bits: 3.98e+04 / 1.20e+04
+  [ANOMALY: DIMENSIONAL PINCH-OFF DETECTED! NEW BUBBLE UNIVERSE SPAWNED]
+
+EPOCH 0700 [GEN 1]
+  ├─ Scale Factor a(t)  : 1.0205 x   |██░░░░░░░░░░░░░░░░░░░░░░|
+  ├─ Max Baryon Density :    7.74
+  ├─ Max Thermal Energy : 34309.16 (Internal u)
+  ├─ Max Stellar Frac.  : 0.17% (S_f)
+  ├─ Max Metallicity    : 0.09% (Z)
+  ├─ Active Black Holes : 835
+  └─ Quantum String Bits: 3.98e+04 / 1.20e+04
+  [ANOMALY: DIMENSIONAL PINCH-OFF DETECTED! NEW BUBBLE UNIVERSE SPAWNED]
+
+EPOCH 0800 [GEN 1]
+  ├─ Scale Factor a(t)  : 1.0268 x   |██░░░░░░░░░░░░░░░░░░░░░░|
+  ├─ Max Baryon Density :    8.19
+  ├─ Max Thermal Energy : 70242.52 (Internal u)
+  ├─ Max Stellar Frac.  : 0.17% (S_f)
+  ├─ Max Metallicity    : 0.09% (Z)
+  ├─ Active Black Holes : 835
+  └─ Quantum String Bits: 3.98e+04 / 1.20e+04
+  [ANOMALY: DIMENSIONAL PINCH-OFF DETECTED! NEW BUBBLE UNIVERSE SPAWNED]
+
+EPOCH 0900 [GEN 1]
+  ├─ Scale Factor a(t)  : 1.0340 x   |██░░░░░░░░░░░░░░░░░░░░░░|
+  ├─ Max Baryon Density :    7.29
+  ├─ Max Thermal Energy : 75055.27 (Internal u)
+  ├─ Max Stellar Frac.  : 0.17% (S_f)
+  ├─ Max Metallicity    : 0.09% (Z)
+  ├─ Active Black Holes : 835
+  └─ Quantum String Bits: 3.98e+04 / 1.20e+04
+  [ANOMALY: DIMENSIONAL PINCH-OFF DETECTED! NEW BUBBLE UNIVERSE SPAWNED]
+
+EPOCH 1000 [GEN 1]
+  ├─ Scale Factor a(t)  : 1.0422 x   |██░░░░░░░░░░░░░░░░░░░░░░|
+  ├─ Max Baryon Density :    5.82
+  ├─ Max Thermal Energy : 66667.85 (Internal u)
+  ├─ Max Stellar Frac.  : 0.17% (S_f)
+  ├─ Max Metallicity    : 0.09% (Z)
+  ├─ Active Black Holes : 835
+  └─ Quantum String Bits: 3.98e+04 / 1.20e+04
+  [ANOMALY: DIMENSIONAL PINCH-OFF DETECTED! NEW BUBBLE UNIVERSE SPAWNED]
+
+
+================================================================================
+        PHASE 2: FRACTAL MULTIVERSE EXTRACTION 
+================================================================================
+  SUCCESS: 47 distinct Generation 2 Seeds generated.
+
+================================================================================
+        PHASE 3: SEQUENTIAL TPU JIT SUPREMACY 
+================================================================================
+ ► Igniting 47 dimensions sequentially.
+ ► Note: Dimension 1 pays the ~4 minute JIT compiler tax. The rest will cascade instantly.
+
+   [IGNITING] Dimension 150 (1/47)... STABLE | a(t): 1.7183 | Stars: 0.22%
+   [IGNITING] Dimension 177 (2/47)... STABLE | a(t): 1.7183 | Stars: 0.17%
+   [IGNITING] Dimension 099 (3/47)... STABLE | a(t): 1.7183 | Stars: 0.18%
+   [IGNITING] Dimension 340 (4/47)... STABLE | a(t): 1.7183 | Stars: 0.20%
+   [IGNITING] Dimension 114 (5/47)... STABLE | a(t): 1.7182 | Stars: 0.18%
+   [IGNITING] Dimension 315 (6/47)... STABLE | a(t): 1.7184 | Stars: 0.19%
+   [IGNITING] Dimension 204 (7/47)... STABLE | a(t): 1.7183 | Stars: 0.20%
+   [IGNITING] Dimension 023 (8/47)... STABLE | a(t): 1.7183 | Stars: 0.20%
+   [IGNITING] Dimension 238 (9/47)... STABLE | a(t): 1.7182 | Stars: 0.20%
+   [IGNITING] Dimension 208 (10/47)... STABLE | a(t): 1.7182 | Stars: 0.15%
+   [IGNITING] Dimension 210 (11/47)... STABLE | a(t): 1.7183 | Stars: 0.22%
+   [IGNITING] Dimension 402 (12/47)... STABLE | a(t): 1.7184 | Stars: 0.20%
+   [IGNITING] Dimension 441 (13/47)... STABLE | a(t): 1.7183 | Stars: 0.21%
+   [IGNITING] Dimension 370 (14/47)... STABLE | a(t): 1.7182 | Stars: 0.19%
+   [IGNITING] Dimension 026 (15/47)... STABLE | a(t): 1.7183 | Stars: 0.21%
+   [IGNITING] Dimension 364 (16/47)... STABLE | a(t): 1.7183 | Stars: 0.18%
+   [IGNITING] Dimension 589 (17/47)... STABLE | a(t): 1.7184 | Stars: 0.21%
+   [IGNITING] Dimension 386 (18/47)... STABLE | a(t): 1.7182 | Stars: 0.20%
+   [IGNITING] Dimension 012 (19/47)... STABLE | a(t): 1.7183 | Stars: 0.20%
+   [IGNITING] Dimension 158 (20/47)... STABLE | a(t): 1.7184 | Stars: 0.18%
+   [IGNITING] Dimension 031 (21/47)... STABLE | a(t): 1.7183 | Stars: 0.22%
+   [IGNITING] Dimension 367 (22/47)... STABLE | a(t): 1.7183 | Stars: 0.21%
+   [IGNITING] Dimension 290 (23/47)... STABLE | a(t): 1.7183 | Stars: 0.20%
+   [IGNITING] Dimension 396 (24/47)... STABLE | a(t): 1.7184 | Stars: 0.19%
+   [IGNITING] Dimension 354 (25/47)... STABLE | a(t): 1.7184 | Stars: 0.18%
+   [IGNITING] Dimension 008 (26/47)... STABLE | a(t): 1.7183 | Stars: 0.18%
+   [IGNITING] Dimension 467 (27/47)... STABLE | a(t): 1.7182 | Stars: 0.19%
+   [IGNITING] Dimension 335 (28/47)... STABLE | a(t): 1.7183 | Stars: 0.19%
+   [IGNITING] Dimension 590 (29/47)... STABLE | a(t): 1.7184 | Stars: 0.19%
+   [IGNITING] Dimension 043 (30/47)... STABLE | a(t): 1.7184 | Stars: 0.19%
+   [IGNITING] Dimension 155 (31/47)... STABLE | a(t): 1.7183 | Stars: 0.18%
+   [IGNITING] Dimension 486 (32/47)... STABLE | a(t): 1.7183 | Stars: 0.18%
+   [IGNITING] Dimension 368 (33/47)... STABLE | a(t): 1.7183 | Stars: 0.21%
+   [IGNITING] Dimension 318 (34/47)... STABLE | a(t): 1.7183 | Stars: 0.18%
+   [IGNITING] Dimension 111 (35/47)... STABLE | a(t): 1.7184 | Stars: 0.20%
+   [IGNITING] Dimension 598 (36/47)... STABLE | a(t): 1.7183 | Stars: 0.20%
+   [IGNITING] Dimension 200 (37/47)... STABLE | a(t): 1.7182 | Stars: 0.19%
+   [IGNITING] Dimension 055 (38/47)... STABLE | a(t): 1.7183 | Stars: 0.20%
+   [IGNITING] Dimension 316 (39/47)... STABLE | a(t): 1.7184 | Stars: 0.20%
+   [IGNITING] Dimension 213 (40/47)... STABLE | a(t): 1.7183 | Stars: 0.19%
+   [IGNITING] Dimension 131 (41/47)... STABLE | a(t): 1.7184 | Stars: 0.18%
+   [IGNITING] Dimension 039 (42/47)... STABLE | a(t): 1.7183 | Stars: 0.22%
+   [IGNITING] Dimension 029 (43/47)... STABLE | a(t): 1.7184 | Stars: 0.21%
+   [IGNITING] Dimension 115 (44/47)... STABLE | a(t): 1.7182 | Stars: 0.14%
+   [IGNITING] Dimension 242 (45/47)... STABLE | a(t): 1.7183 | Stars: 0.22%
+   [IGNITING] Dimension 197 (46/47)... STABLE | a(t): 1.7182 | Stars: 0.20%
+   [IGNITING] Dimension 101 (47/47)... STABLE | a(t): 1.7184 | Stars: 0.20%
+
+================================================================================
+        ALL GENERATION 2 UNIVERSES HAVE MATURED. 
+================================================================================
