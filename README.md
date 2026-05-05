@@ -1,62 +1,48 @@
 [![DOI](https://zenodo.org/badge/1222455299.svg)](https://doi.org/10.5281/zenodo.19822536)
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eB89a0FUgZUQL5Qs_uTuEzmeXdH88ar4?usp=sharing)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-# The Bandyopadhyay Cyclic Manifold: Dual-Component Engine (v31.2)
-**Lead Architect:** Rupayan Bandyopadhyay
+# The Bandyopadhyay Cyclic Manifold: Fractal Multiverse Engine (v33.0)
+**Lead Architect:** Rupayan Bandyopadhyay  
+**Release:** v33.0 (The Immutable Entropy Update)  
+**Timestamp:** May 2026  
 
-A high-performance, JAX-accelerated cosmological engine simulating a non-singular cyclic universe. This version represents a fundamental architectural leap, fusing **Collisionless Dark Matter (PM)** with **Hydrodynamic Baryonic Fluid (SPH)** to model an emergent "Quantum Bounce" driven by physical fluid pressure rather than scripted triggers.
+A high-performance, JAX-accelerated cosmological engine simulating a non-singular, cyclic, and **fractal multiverse**. This version (v33.0) represents a monolithic architectural leap, evolving from a single bouncing universe into a self-replicating manifold. It integrates **Smoothed Particle Hydrodynamics (SPH)**, **Collisionless Dark Matter (PM)**, and the **Smolin Protocol** (Cosmological Natural Selection) to model the birth of distinct child dimensions from singular event horizons.
 
 ---
 
-## 📄 Abstract
-The Bandyopadhyay Cyclic Manifold (v31.2) discards artificial "white hole" logic flags in favor of first-principles emergent physics. Utilizing a hybrid **Particle-Mesh (PM)** and **Smoothed Particle Hydrodynamics (SPH)** architecture, the engine simulates a dual-sector universe where Dark Matter provides the gravitational scaffolding for a Baryonic core. By integrating the **FLRW metric tensor** and a non-linear **Schwarzschild-de Sitter Lapse ($\alpha$)**, the simulation demonstrates that a non-singular bounce is a natural consequence of baryonic fluid reaching peak compression limits.
+## 🌌 Abstract: The Smolin-Bandyopadhyay Protocol
 
-## 🚀 Architectural Evolution: v31.2 vs. Previous v13.0
-The v31.2 engine marks a complete paradigm shift from the earlier v13.0 String-Star Manifold repository. The core upgrades emphasize the transition from **prescriptive logic** to **emergent physical properties**:
+The Bandyopadhyay Cyclic Manifold (v33.0) fundamentally rewrites the rules of cosmic iteration. Discarding the singular, universe-wide bounce of previous builds, this engine implements localized dimensional rupture. Utilizing a hybrid **Particle-Mesh (PM)** and **Smoothed Particle Hydrodynamics (SPH)** architecture, the engine maps the gravitational collapse of collisionless Dark Matter and the hydrodynamic behavior of baryonic fluid. 
 
-*   **From Unified Matter to Dual-Component:** While v13.0 treated all particles identically, v31.2 splits the universe into two distinct physical sectors. Dark Matter operates purely via gravity on a high-speed PM grid, while Baryons interact hydrodynamically via SPH. 
-*   **From Scripted Triggers to Emergent Bounces:** v13.0 forced a bounce when density hit a hard-coded Planck threshold (the "White Hole Flag"). In v31.2, this is entirely removed. The bounce is mathematically emergent, occurring solely when the Baryonic internal fluid pressure ($P = k\rho^2$) violently overcomes the gravitational Dark Matter crush.
-*   **From Linear Scaling to the FLRW Metric:** Spacetime in v31.2 is no longer a static box; spatial coordinates are coupled directly to the dynamic scale factor $a(t)$, allowing for genuine Hubble Flow expansion post-bounce.
+When local baryonic density crosses the Schwarzschild threshold, generating extreme quantum entropy (String Bits), the metric pinches off. The engine dynamically maps these singularities using **DBSCAN spatial clustering** and spawns independent Generation 2 "child" universes. Each child inherits mutated physical constants (Dark Matter Mass, Quintessence Potential, Cooling Rates) in a strict demonstration of Cosmological Natural Selection.
 
-## 🔄 The Dual-Component Cycle
-The simulation operates on a tripartite energy-sector loop, where total universal information $I_{total}$ is strictly conserved across the bounce:
+## 🚀 Architectural Evolution: v33.0 vs. Legacy Builds
 
-$$I_{total} = I_{dark} + I_{baryon} + I_{vacuum} \equiv 1.000000$$
+The v33.0 engine marks a profound shift from a closed-loop bouncing simulation to an open-ended, evolutionary multiverse generator:
 
-| Sector | Description | Kinematics |
+*   **From Global Bounce to Fractal Spawning:** The global bounce is replaced by **localized dimensional rupture**. Extreme density pockets ($\rho > 15.0$) trigger localized black hole formations that spawn independent, parallel universes.
+*   **From Static to Darwinian Constants:** Introduces the **Smolin Protocol**. Child universes inherit mutated variations of their parent's Dark Matter Mass, Quintessence, and Cooling Coefficients.
+*   **From Single Thread to Sequential JIT Supremacy:** Simulating a multiverse requires extreme hardware optimization. v33.0 introduces a custom orchestrator designed for Cloud TPU v5e nodes. It utilizes **Sequential JIT Supremacy** to completely bypass XLA compiler gridlock, securely mapping and maturing dozens of parallel dimensions without memory swap failure.
+*   **From Pressure to Thermodynamic Expansion:** The initial conditions for Generation 2 universes have been corrected from a chaotic kinetic burst to a **Thermodynamic Big Bang**, where expansion is driven smoothly by inherited primordial thermal pressure ($u_b$).
+
+## 🔄 The Smolin Extraction Cycle
+
+The simulation operates in three distinct, automated phases to execute Cosmological Natural Selection:
+
+| Phase | Description | Key Mechanism |
 | :--- | :--- | :--- |
-| **Dark Matter** | Collisionless point masses driving global gravity. | $O(N \log N)$ FFT-PM Solver |
-| **Baryonic Fluid** | Collisional matter generating hydrodynamic pressure. | $O(N^2)$ SPH Interaction |
-| **Vacuum** | Dynamic Dark Energy pool ($\Lambda$) driving expansion. | FLRW Metric Scaling |
+| **I. Primary Quantum Node (Gen 1)** | Simulates the parent universe for 1,000 epochs, tracking Dark Matter halos and baryonic collapse into singularities. | $O(N^2)$ SPH Interaction & Black Hole Masking |
+| **II. Fractal Extraction** | Analyzes the final state of Gen 1. Uses spatial clustering to identify distinct supermassive black holes, filtering out quantum micro-fluctuations (Entropy < 100 bits). | DBSCAN Algorithm & Genetic Mutation |
+| **III. Sequential JIT Maturation** | Iteratively boots and simulates every generated child universe (Gen 2). Tracks their evolutionary fitness through star formation ($S_f$). | Hardware-Optimized Sequential Execution |
 
-## 💻 Live Interactive Simulation
-A complete, high-fidelity interactive environment is hosted on Google Colab, optimized for TPU-accelerated execution.
+## 💻 Hardware Specifications & Execution
 
-**👉 [Run the v31.2 Engine at the Quantum Node](https://colab.research.google.com/drive/1eB89a0FUgZUQL5Qs_uTuEzmeXdH88ar4?usp=sharing)**
+This engine is designed to push the absolute limits of memory allocation on modern tensor hardware.
 
-*(Note: To modify physical parameters or scale the particle count, click **File > Save a copy in Drive** and ensure your runtime is set to **TPU**).*
+*   **Target Architecture:** Cloud TPU v5e (or high-VRAM GPU equivalent).
+*   **Hardware Safety:** The engine explicitly disables JAX's aggressive VRAM preallocation (`XLA_PYTHON_CLIENT_PREALLOCATE='false'`) to prevent swap-memory death spirals.
+*   **Execution Protocol:** Do not attempt arbitrary Python `multiprocessing`. The engine relies on **Sequential Execution** to manage the XLA compiler cache. The first dimension pays a ~4-minute JIT compilation tax; all subsequent dimensions cascade instantly.
 
-## ⚙️ v31.2 Core Innovations
-*   **Emergent Hydrodynamic Bounce:** Gravity is countered by a vectorized SPH kernel calculating real-time inter-particle repulsion ($P = k\rho^2$).
-*   **Adiabatic Relaxation Layer:** Implements a custom velocity-damping phase for $t < 250$ to solve the "Initial Condition Shock" paradox, allowing stable fluid accretion within Dark Matter halos.
-*   **Hybrid-Precision FFT Solver:** Utilizes `float32` for $128^3$ mesh potential solutions while maintaining `float64` for particle states to preserve absolute unitarity.
-*   **Detailed Telemetry Logging:** Professional-grade output tracking metric lapse ($\alpha$), baryon pressure, and scale factor, with automated export to `quantum_node_telemetry.csv`.
-
-## 🎥 Cinematic 3D Visualization & Telemetry
-
-![v31.2 Cinematic Visualization](outputs/manifold_v31_2.gif)
-
-*The 3D render above demonstrates the collisionless Dark Matter scaffolding (ghosted nodes) driving the gravitational crunch, while the Hydrodynamic Baryonic core (color-mapped) generates the pressure spike that triggers the emergent Quantum Bounce.*
-
-The v31.2 engine features high-fidelity terminal logging with self-explanatory descriptive tooltips for each epoch, complementing the visual data:
-```text
-EPOCH 0200 | [ <<< CRUNCHING <<< ]
-  ├─ Scale Factor a(t)  : 1.0863 x   |████░░░░░░░░░░░░░░░░░░░░|
-  │  (Current size of the universe relative to the initial state)
-  ├─ Baryon Pressure    :   25.91 bits
-  │  (Inter-particle repulsion preventing total singularity collapse)
-  ├─ Metric Lapse (α)   : 0.841203
-  │  (Gravitational time dilation; lower values indicate higher density)
-  └─ Quantum Bounces    : 0
-     (Number of successful non-singular phase transitions completed)
+**Dependencies:**
+```bash
+pip install jax jaxlib h5py scikit-learn numpy
